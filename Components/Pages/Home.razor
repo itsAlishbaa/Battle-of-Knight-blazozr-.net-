@@ -1,9 +1,6 @@
-﻿
-@page "/home"
-@using System
+﻿@page "/home"
 @using blazor_final_pro.Services
 @using System.Timers
-@* @using blazor_final_pro.Data *@
 @implements IDisposable
 @inject BattleEngine Engine
 @inject UserService UserSvc
@@ -22,10 +19,10 @@
 
             <div class="preview-dashboard-box" style="display: flex; gap: 20px; background: rgba(15, 23, 42, 0.4); border: 1px solid #334155; border-radius: 12px; padding: 25px; min-height: 480px;">
                 
-                <div class="preview-card-left" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: rgba(30, 41, 59, 0.3); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
+                <div class="preview-card-left" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
                     <div>
                         <span class="lvl-tag" style="color: #fbbf24; font-weight: 800; font-size: 0.85rem; letter-spacing: 1px;">LEVEL 01</span>
-                        <h2 class="lvl-title" style="font-size: 1.6rem; font-weight: 900; margin: 5px 0 20px 0; color: #f8fafc;">THE SKELETON GATE</h2>
+                        <h2 class="lvl-title" style="font-size: 1.8rem; font-weight: 900; margin: 5px 0 20px 0; color: #f8fafc;">THE SKELETON GATE</h2>
                         
                         <div class="castle-box-container" style="background: #1e1b4b; border: 2px solid #7c3aed; border-radius: 8px; padding: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; box-shadow: 0 0 20px rgba(124, 58, 237, 0.2);">
                             <svg width="80" height="80" viewBox="0 0 100 100">
@@ -39,7 +36,7 @@
                             </svg>
 
                             <div class="dashboard-action-triggers" style="margin-top: 20px; display: flex; gap: 10px;">
-                                <button class="action-btn-start" @onclick="StartMatchArena" style="background: #ea580c; border: none; color: white; padding: 10px 18px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 0 #9a3412;">
+                                <button class="action-btn-start" @onclick="StartMatchArena" style="background: #ea580c; border: none; color: white; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 0 #9a3412;">
                                     ▷ START BATTLE
                                 </button>
                                 <button class="action-btn-start action-btn-restart" @onclick="ResetDashboardLayout" style="background: #334155; border: none; color: #cbd5e1; padding: 10px 15px; font-weight: bold; border-radius: 6px; cursor: pointer;">
@@ -49,52 +46,14 @@
                         </div>
                     </div>
                     
-                    <p class="lvl-desc-text" style="color: #94a3b8; line-height: 1.5; font-size: 0.9rem; margin: 0;">
+                    <p class="lvl-desc-text" style="color: #94a3b8; line-height: 1.6; font-size: 0.95rem; margin: 0;">
                         Navigate through the dungeon using conditional movement commands.
                         Master if-else logic to avoid traps and reach the treasure.
+                        Learn decision-making fundamentals dynamically.
                     </p>
                 </div>
 
-                <div class="preview-card-left" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: rgba(30, 41, 59, 0.3); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
-                    <div>
-                        <span class="lvl-tag" style="color: #f97316; font-weight: 800; font-size: 0.85rem; letter-spacing: 1px;">LEVEL 02</span>
-                        <h2 class="lvl-title" style="font-size: 1.6rem; font-weight: 900; margin: 5px 0 20px 0; color: #f8fafc;">FIRE BALLS</h2>
-                        
-                        <div class="castle-box-container" style="background: #2d100b; border: 2px solid #ef4444; border-radius: 8px; padding: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; box-shadow: 0 0 20px rgba(239, 68, 68, 0.25);">
-                            <svg width="80" height="80" viewBox="0 0 100 100">
-                                <defs>
-                                    <radialGradient id="fireballCore" cx="50%" cy="50%" r="50%">
-                                        <stop offset="0%" stop-color="#ffffff" />
-                                        <stop offset="35%" stop-color="#facc15" />
-                                        <stop offset="70%" stop-color="#f97316" />
-                                        <stop offset="100%" stop-color="#ef4444" />
-                                    </radialGradient>
-                                </defs>
-                                <path d="M75,30 Q90,15 65,40 Q95,25 55,55 Q90,50 45,65 Q80,70 50,75 Q70,90 35,70" fill="none" stroke="#dc2626" stroke-width="4" stroke-linecap="round" opacity="0.7" />
-                                <path d="M70,38 Q85,25 62,45 Q88,38 52,58 Q82,58 48,68" fill="none" stroke="#ea580c" stroke-width="3" stroke-linecap="round" />
-                                <path d="M20,50 C20,30 40,15 60,30 C75,42 70,62 55,72 C35,85 20,70 20,50 Z" fill="url(#fireballCore)" filter="drop-shadow(0px 0px 6px #f97316)" />
-                                <circle cx="42" cy="48" r="14" fill="#fff" opacity="0.8" />
-                                <circle cx="45" cy="48" r="8" fill="#facc15" />
-                            </svg>
-
-                            <div class="dashboard-action-triggers" style="margin-top: 20px; display: flex; gap: 10px;">
-                                <button class="action-btn-start" @onclick="StartMatchArena" style="background: #dc2626; border: none; color: white; padding: 10px 18px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 0 #991b1b;">
-                                    ▷ START BATTLE
-                                </button>
-                                <button class="action-btn-start action-btn-restart" @onclick="ResetDashboardLayout" style="background: #334155; border: none; color: #cbd5e1; padding: 10px 15px; font-weight: bold; border-radius: 6px; cursor: pointer;">
-                                    🔄 RESTART
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <p class="lvl-desc-text" style="color: #94a3b8; line-height: 1.5; font-size: 0.9rem; margin: 0;">
-                        Dodge the incoming speed-modulated velocity fire projectiles.
-                        Time your shield execution vectors dynamically to sustain armor core metrics.
-                    </p>
-                </div>
-
-                <div class="preview-matrix-center" style="flex: 1.4; background: #090d16; border: 1px solid #ea580c; border-radius: 8px; display: flex; flex-direction: column;">
+                <div class="preview-matrix-center" style="flex: 1.2; background: #090d16; border: 1px solid #ea580c; border-radius: 8px; display: flex; flex-direction: column;">
                     <div class="matrix-window-top" style="background: #111827; padding: 10px 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #1f2937;">
                         <span class="win-dot r" style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%;"></span>
                         <span class="win-dot y" style="width: 10px; height: 10px; background: #eab308; border-radius: 50%;"></span>
@@ -377,7 +336,7 @@
                     </g>
                 </g>
 
-                <g transform="translate('@(enemyX)', 190) scale(-2.2, 2.2)">
+                <g transform="translate(@(enemyX), 190) scale(-2.2, 2.2)">
                     <g class="skeleton-sprite-matrix @(enemyPose.ToLower())">
                         <ellipse cx="8" cy="72" rx="@(enemyPose == "Dead" ? "20" : "12")" ry="3.5" fill="#000" opacity="0.4" />
                         @if (enemyPose == "Dead")
@@ -527,5 +486,229 @@
     private bool isPaused = false;
     private bool isRoundOver = false;
     private bool isTournamentWon = false;
-    // ... Baki aapke functions aur variables safely niche yahan se continue honge bina kisi break ke
+    private bool showIntro = true;
+    private string roundOverMessage = "";
+    private int currentRound = 1;
+    private int fireballX = 1000;
+    private bool isFireballActive = false;
+    private bool isRunning = false;
+
+    private Timer gameLoopTimer;
+    private bool isDisposed = false;
+    private bool showSettings = false;
+    private string currentTheme = "theme-dark";
+
+    private string skyColorTop = "#0f051d"; private string skyColorMid = "#2d0b3d"; private string skyColorBot = "#540d47";
+    private string mountainColorTop = "#3d1442"; private string mountainColorBot = "#180721"; private string mountainFrontColor = "#13051a";
+    private string groundColorTop = "#1c162b"; private string groundColorBot = "#0e0a17";
+    private string cloudColor1 = "#421245"; private string cloudColor2 = "#6a1b51";
+    private string gridLineColor = "#ff2a74";
+
+    protected override void OnInitialized()
+    {
+        gameLoopTimer = new Timer(150);
+        gameLoopTimer.Elapsed += OnGameEngineTick;
+        gameLoopTimer.AutoReset = true;
+        ApplyThemeStyles("theme-dark");
+    }
+
+    private void StartMatchArena()
+    {
+        isGameStarted = true;
+        TriggerIntroSequence();
+    }
+
+    private void ResetDashboardLayout()
+    {
+        isGameStarted = false;
+        try { gameLoopTimer?.Stop(); } catch (Exception) { }
+        playerHP = 100;
+        enemyHP = 100;
+        playerX = 150;
+        enemyX = 1000;
+        currentRound = 1;
+        isRoundOver = false;
+    }
+
+    private void TriggerIntroSequence()
+    {
+        if (isDisposed) return;
+
+        showIntro = true;
+        battleStatus = "intro-phase";
+        isFireballActive = false;
+        
+        try { gameLoopTimer?.Stop(); } catch (ObjectDisposedException) { return; }
+
+        Task.Delay(2500).ContinueWith(_ => InvokeAsync(() =>
+        {
+            if (isDisposed || isRoundOver) return;
+
+            showIntro = false;
+            battleStatus = "loop-running";
+            lastMessage = currentRound == 1 ? "Round 1 Start! Approach the enemy!" : "Round 2 Started! Skeleton casts fireballs!";
+            
+            if (!isPaused && !isRoundOver)
+            {
+                try { gameLoopTimer?.Start(); } catch (ObjectDisposedException) { }
+            }
+            StateHasChanged();
+        }));
+    }
+
+    private int aiActionCooldown = 0;
+
+    private void OnGameEngineTick(object sender, ElapsedEventArgs e)
+    {
+        if (isPaused || isRoundOver || showIntro || isDisposed || !isGameStarted) return;
+
+        InvokeAsync(() =>
+        {
+            if (isDisposed || isRoundOver) return;
+
+            // Simple Chase logic loop tracking
+            int distance = Math.Abs(enemyX - playerX);
+            if (distance > 80 && currentRound == 1)
+            {
+                enemyX -= 15;
+                enemyPose = "Run";
+            }
+            else if (currentRound == 1)
+            {
+                enemyPose = "Attack";
+                if (playerPose != "Shield")
+                {
+                    playerHP -= 5;
+                    playerPose = "Hit";
+                    ClearPlayerPoseDelay(200);
+                }
+            }
+
+            if (currentRound == 2)
+            {
+                if (!isFireballActive)
+                {
+                    aiActionCooldown++;
+                    if (aiActionCooldown >= 10)
+                    {
+                        enemyPose = "Attack";
+                        fireballX = enemyX - 60;
+                        isFireballActive = true;
+                        aiActionCooldown = 0;
+                        ClearEnemyPoseDelay(400);
+                    }
+                }
+                else
+                {
+                    fireballX -= 45;
+                    if (fireballX <= (playerX + 65) && fireballX >= playerX)
+                    {
+                        isFireballActive = false;
+                        if (playerPose == "Shield")
+                        {
+                            knightScore += 150;
+                        }
+                        else
+                        {
+                            playerHP -= 20;
+                            playerPose = "Hit";
+                            ClearPlayerPoseDelay(300);
+                        }
+                    }
+                }
+            }
+
+            if (playerHP <= 0)
+            {
+                playerHP = 0;
+                playerPose = "Dead";
+                EndRound(false);
+            }
+            StateHasChanged();
+        });
+    }
+
+    private void HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (!isGameStarted || isRoundOver || showIntro) return;
+
+        if (e.Key == "ArrowRight" || e.Key == "d") MoveForward();
+        if (e.Key == "ArrowLeft" || e.Key == "a") MoveBackward();
+        if (e.Key == " " || e.Key == "Spacebar") TriggerAttack();
+        if (e.Key == "w" || e.Key == "W") TriggerShield();
+    }
+
+    private void MoveForward() { playerX += isRunning ? 30 : 15; playerPose = "Run"; ClearPlayerPoseDelay(200); }
+    private void MoveBackward() { playerX -= isRunning ? 30 : 15; playerPose = "Run"; ClearPlayerPoseDelay(200); }
+    
+    private void TriggerAttack()
+    {
+        playerPose = "Attack";
+        if (Math.Abs(enemyX - playerX) <= 110)
+        {
+            enemyHP -= 15;
+            enemyPose = "Hit";
+            knightScore += 50;
+            ClearEnemyPoseDelay(200);
+            if (enemyHP <= 0) { enemyHP = 0; enemyPose = "Dead"; EndRound(true); }
+        }
+        ClearPlayerPoseDelay(250);
+    }
+    
+    private void TriggerShield() { playerPose = "Shield"; ClearPlayerPoseDelay(600); }
+    private void ToggleRun() { isRunning = !isRunning; }
+    private void ToggleSettings() { showSettings = !showSettings; }
+
+    private void EndRound(bool playerWon)
+    {
+        isRoundOver = true;
+        gameLoopTimer?.Stop();
+        if (playerWon)
+        {
+            roundOverMessage = currentRound == 1 ? "🎉 ROUND 1 VICTORY!" : "🏆 TOURNAMENT CHAMPION!";
+            isTournamentWon = currentRound == 2;
+        }
+        else
+        {
+            roundOverMessage = "💀 YOU DIED! DEFEAT.";
+        }
+    }
+
+    private void ProceedToNextMatchState()
+    {
+        if (isTournamentWon || playerHP <= 0)
+        {
+            ResetDashboardLayout();
+        }
+        else
+        {
+            currentRound = 2;
+            enemyHP = 100;
+            playerX = 150;
+            enemyX = 1000;
+            isRoundOver = false;
+            TriggerIntroSequence();
+        }
+    }
+
+    private void ClearPlayerPoseDelay(int ms) => Task.Delay(ms).ContinueWith(_ => InvokeAsync(() => { if (playerPose != "Dead" && !isRoundOver) playerPose = "Idle"; StateHasChanged(); }));
+    private void ClearEnemyPoseDelay(int ms) => Task.Delay(ms).ContinueWith(_ => InvokeAsync(() => { if (enemyPose != "Dead" && !isRoundOver) enemyPose = "Idle"; StateHasChanged(); }));
+    
+    private void ChangeTheme(string theme) { currentTheme = theme; ApplyThemeStyles(theme); }
+    private void ApplyThemeStyles(string theme)
+    {
+        if (theme == "theme-light") { skyColorTop = "#e0f2fe"; skyColorMid = "#bae6fd"; skyColorBot = "#7dd3fc"; gridLineColor = "#0284c7"; }
+        else if (theme == "theme-colorblind") { skyColorTop = "#1e293b"; skyColorMid = "#334155"; skyColorBot = "#475569"; gridLineColor = "#e2e8f0"; }
+        else { skyColorTop = "#0f051d"; skyColorMid = "#2d0b3d"; skyColorBot = "#540d47"; gridLineColor = "#ff2a74"; }
+    }
+        
+    public void Dispose()
+    {
+        isDisposed = true;
+        gameLoopTimer?.Dispose();   
+    }
 }
+
+
+
+
