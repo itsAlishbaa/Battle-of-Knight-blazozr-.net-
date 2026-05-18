@@ -1,0 +1,179 @@
+﻿@page "/GamePage"
+@using blazor_final_pro.Services
+@using blazor_final_pro.Components.GameObject
+@inject BattleEngine Engine
+@inject UserService UserSvc
+@rendermode InteractiveServer
+
+<div class="lobby-container-new">
+    
+    <div class="lobby-top-heading">
+        <span class="games-badge">3</span>
+        <h1>AVAILABLE GAMES</h1>
+    </div>
+
+    @if (!isBattleLive)
+    {
+        <div class="preview-dashboard-box main-lobby-view">
+            
+            <div class="preview-card-left">
+                <span class="lvl-tag">LEVEL 01</span>
+                <h2 class="lvl-title">THE SKELETON GATE</h2>
+                
+                <div class="castle-box-container">
+                    <svg width="70" height="70" viewBox="0 0 100 100">
+                        <rect x="25" y="45" width="50" height="40" fill="#a78bfa" rx="4" />
+                        <rect x="20" y="35" width="12" height="50" fill="#7c3aed" rx="2" />
+                        <rect x="68" y="35" width="12" height="50" fill="#7c3aed" rx="2" />
+                        <polygon points="20,35 26,20 32,35" fill="#f43f5e" />
+                        <polygon points="68,35 74,20 80,35" fill="#f43f5e" />
+                        <polygon points="41,45 50,30 59,45" fill="#f43f5e" />
+                        <rect x="42" y="65" width="16" height="20" fill="#1e1b4b" rx="8" />
+                    </svg>
+
+                    <div class="dashboard-action-triggers-overlay">
+                        <button class="action-btn-start" @onclick="LaunchInnerBattle">
+                            ▷ START BATTLE
+                        </button>
+                        <button class="action-btn-start action-btn-restart" @onclick="StopAndResetBattle">
+                            🔄 RESTART GAME
+                        </button>
+                    </div>
+                </div>
+                
+                <p class="lvl-desc-text">
+                    Navigate through the dungeon using conditional movement commands.
+                    Master if-else logic to avoid traps and reach the treasure.
+                    Learn decision-making fundamentals.
+                </p>
+            </div>
+
+            <div class="preview-code-right">
+                <div class="matrix-window-top">
+                    <span class="win-dot r"></span>
+                    <span class="win-dot y"></span>
+                    <span class="win-dot g"></span>
+                    <span class="win-title-text">CombatEngine.cs</span>
+                </div>
+                <div class="code-editor-mock">
+                    <pre>
+<span class="keyword">public class</span> <span class="class-name">CombatEngine</span>
+{
+    <span class="keyword">void</span> <span class="method-name">ProcessMovement</span>()
+    {
+        <span class="conditional">if</span> (enemyAhead)
+        {
+            <span class="action">MoveLeft</span>();
+        }
+        <span class="conditional">else if</span> (treasureDetected)
+        {
+            <span class="action">MoveForward</span>();
+            <span class="action">CollectItem</span>();
+        }
+        <span class="conditional">else</span>
+        {
+            <span class="action">MoveRight</span>();
+        }
+    }
+}</pre>
+                </div>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <div class="preview-dashboard-box live-battle-view">
+            
+            <div class="battle-top-bar">
+                <div class="matrix-grid-visualizer-mini">
+                    @for (int i = 0; i < 36; i++)
+                    {
+                        <div class="matrix-cube"></div>
+                    }
+                </div>
+
+                <div class="live-battle-stats-center">
+                    <div class="stat-group-row">
+                        <span>PLAYER HEALTH: @Engine.State.PlayerHP%</span>
+                        <div class="bar-track-container">
+                            <div class="bar-fill-gradient player-gradient" style="width: @(Engine.State.PlayerHP)%"></div>
+                        </div>
+                    </div>
+                    <div class="vs-badge-block">
+                        <span class="vs-main-lbl">VS</span>
+                    </div>
+                    <div class="stat-group-row">
+                        <span>SKELETON HEALTH: @Engine.State.EnemyHP%</span>
+                        <div class="bar-track-container">
+                            <div class="bar-fill-gradient skeleton-gradient" style="width: @(Engine.State.EnemyHP)%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="live-combat-simulation-canvas" @onkeydown="HandleBattleInput" tabindex="0">
+                <svg class="fight-arena-svg" viewBox="0 0 1000 400">
+                    <rect width="100%" height="160" fill="#090d16" />
+                    <rect y="160" width="100%" height="240" fill="#131926" />
+                    <line x1="0" y1="160" x2="1000" y2="160" stroke="#ea580c" stroke-width="2" />
+
+                    <g transform="translate(@(Engine.State.PlayerX), 90)">
+                        <Knight StateClass="@Engine.State.PlayerPose" />
+                    </g>
+                    <g transform="translate(@(900 - Engine.State.EnemyX), 150) scale(-1, 1)">
+                        <Skeleton StateClass="@Engine.State.EnemyPose" />
+                    </g>
+                </svg>
+
+                @if (Engine.State.PlayerHP <= 0)
+                {
+                    <div class="game-over-overlay">
+                        <div class="game-over-card">
+                            <h3>💀 YOU DIED! GAME OVER</h3>
+                            <button class="action-btn-start reset-btn" @onclick="StopAndResetBattle">
+                                🔄 RESET TOURNAMENT
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="dashboard-action-triggers-bottom">
+                <button class="action-btn-start action-btn-restart" @onclick="StopAndResetBattle">
+                    🛑 EXIT BATTLE
+                </button>
+            </div>
+        </div>
+    }
+
+    <div class="fight-footer-bg-text">FIGHT CODE</div>
+</div>
+
+@code {
+    private bool isBattleLive = false;
+
+    protected override void OnInitialized()
+    {
+        Engine.OnStateChanged += () => InvokeAsync(StateHasChanged);
+    }
+
+    private void LaunchInnerBattle()
+    {
+        isBattleLive = true;
+        Engine.StartAiLoop();
+    }
+
+    private void StopAndResetBattle()
+    {
+        isBattleLive = false;
+    }
+
+    private void HandleBattleInput(KeyboardEventArgs e)
+    {
+        if (!isBattleLive) return;
+
+        if (e.Key == "ArrowLeft") Engine.HandleGesture("SwipeLeft");
+        if (e.Key == "ArrowRight") Engine.HandleGesture("SwipeRight");
+    }
+}

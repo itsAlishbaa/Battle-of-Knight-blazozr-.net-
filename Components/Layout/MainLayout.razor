@@ -1,0 +1,42 @@
+﻿@inherits LayoutComponentBase
+@using blazor_final_pro.Services
+@inject UserService UserSvc
+@inject NavigationManager Nav
+
+<div style="display: flex; background: #020617; min-height: 100vh; color: white; font-family: sans-serif;">
+    
+    <div class="sidebar-container" style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; background: #020617; border-right: 1px solid #fbbf24; padding: 30px 20px; box-sizing: border-box; position: fixed; width: 260px; left: 0; top: 0; z-index: 100;">
+        <div>
+            <div class="nav-logo" style="margin-bottom: 40px; padding-left: 10px;">
+                <span class="logo-glow" style="color: #fbbf24; font-weight: bold; font-size: 1.8rem; letter-spacing: 2px; text-shadow: 0 0 10px #fbbf24;">FS</span>
+            </div>
+
+            <nav class="nav-links" style="display: flex; flex-direction: column; gap: 20px;">
+                <a href="home" class="nav-item @GetActiveClass("/home")" style="text-decoration: none; color: #94a3b8; display: block; font-weight: bold; font-size: 0.95rem; letter-spacing: 1px; padding: 8px 10px; transition: 0.2s;">HOME</a>
+                <a href="profile" class="nav-item @GetActiveClass("/profile")" style="text-decoration: none; color: #94a3b8; display: block; font-weight: bold; font-size: 0.95rem; letter-spacing: 1px; padding: 8px 10px; transition: 0.2s;">PROFILE</a>
+                <a href="settings" class="nav-item @GetActiveClass("/settings")" style="text-decoration: none; color: #94a3b8; display: block; font-weight: bold; font-size: 0.95rem; letter-spacing: 1px; padding: 8px 10px; transition: 0.2s;">SETTINGS</a>
+                <a href="reviews" class="nav-item @GetActiveClass("/reviews")" style="text-decoration: none; color: #94a3b8; display: block; font-weight: bold; font-size: 0.95rem; letter-spacing: 1px; padding: 8px 10px; transition: 0.2s;">ADD REVIEW</a>
+            </nav>
+        </div>
+
+        <div class="nav-footer" style="padding-top: 20px; border-top: 1px solid #1e293b;">
+            <button class="logout-btn" @onclick="Logout" style="background: transparent; border: none; color: #ef4444; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 0.95rem; letter-spacing: 1px; padding: 5px 10px; width: 100%; text-align: left;">LOGOUT</button>
+        </div>
+    </div>
+
+    <main style="flex-grow: 1; margin-left: 260px; padding: 40px; box-sizing: border-box;">
+        @Body
+    </main>
+
+</div>
+
+@code {
+    private string GetActiveClass(string uri) =>
+        Nav.Uri.ToLower().EndsWith(uri.ToLower()) ? "active" : "";
+
+    private void Logout()
+    {
+        UserSvc.CurrentUser = null;
+        Nav.NavigateTo("/");
+    }
+}

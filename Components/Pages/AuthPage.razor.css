@@ -1,0 +1,204 @@
+﻿/*.clash-bg {
+    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://wallpaperaccess.com/full/1155018.jpg');
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-frame {
+    background: rgba(18, 25, 33, 0.95);
+    border: 3px solid #4a5a6a;
+    border-radius: 20px;
+    padding: 40px;
+    width: 850px;
+}
+
+.auth-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.clash-card {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 25px;
+    border-radius: 12px;
+}*/
+
+/* MERGED INPUT STYLE */
+/*.clash-input {
+    width: 100%;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
+    color: #fff !important;
+    padding: 12px 35px 12px 0 !important;*/ /* Right padding for the eye icon */
+    /*margin-top: 15px;
+    outline: none !important;
+    box-shadow: none !important;
+}*/
+
+/* EYE ICON POSITIONING */
+/*.clash-eye {
+    cursor: pointer;
+    float: right;
+    margin-top: -32px;
+    margin-right: 5px;
+    color: #ff007f;
+    font-size: 1.2rem;
+    user-select: none;
+    position: relative;
+    z-index: 10;
+}
+
+.clash-btn-pink {
+    background: #ff007f;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    margin-top: 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.label-yellow {
+    color: #ffcc00;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.clash-title {
+    color: white;
+    text-transform: uppercase;
+}
+
+.clash-status {
+    color: #00ffcc;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+}*/
+
+/* THE FINAL KILLER FOR WHITE AUTOFILL BOXES */
+/*input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: white !important;
+    -webkit-box-shadow: 0 0 0px 1000px #121921 inset !important;*/ /* Uses your UI dark color */
+    /*transition: background-color 5000s ease-in-out 0s !important;
+}*/
+
+/* FULL SCREEN IMAGE/GIF HANDLER */
+.full-screen-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    overflow: hidden;
+    background: black;
+}
+
+.bg-fill {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This makes it full screen without stretching ugly */
+}
+
+.loader-overlay {
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
+    text-align: center;
+    background: rgba(0,0,0,0.5);
+    padding: 20px 0;
+}
+
+/* FORM STYLES */
+.clash-bg {
+    background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('/images/intro.jpg'); /* Your intro image as background */
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-frame {
+    background: rgba(18, 25, 33, 0.98);
+    border: 3px solid #4a5a6a;
+    border-radius: 20px;
+    padding: 40px;
+    width: 850px;
+}
+
+.auth-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.clash-input {
+    width: 100%;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
+    color: #fff !important;
+    padding: 12px 35px 12px 0 !important;
+    margin-top: 15px;
+    outline: none !important;
+}
+
+.clash-eye {
+    cursor: pointer;
+    float: right;
+    margin-top: -32px;
+    color: #ff007f;
+    font-size: 1.2rem;
+    position: relative;
+    z-index: 10;
+}
+
+.clash-btn-pink {
+    background: #ff007f;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    margin-top: 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.label-yellow {
+    color: #ffcc00;
+    font-weight: bold;
+}
+
+.clash-title {
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.clash-status {
+    color: #00ffcc;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* Blocks the browser from turning fields white */
+input:-webkit-autofill {
+    -webkit-text-fill-color: white !important;
+    -webkit-box-shadow: 0 0 0px 1000px #121921 inset !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+}

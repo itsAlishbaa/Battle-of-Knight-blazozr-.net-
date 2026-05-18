@@ -1,0 +1,248 @@
+﻿@* @page "/"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Text.Json
+@inject NavigationManager NavManager
+@rendermode InteractiveServer
+
+<div class="clash-bg">
+    <div class="main-frame">
+        <div class="header-area text-center">
+            <h2 class="clash-title">Gaming Login Form</h2>
+            <p class="clash-subtitle">Welcome. Register or Sign in.</p>
+        </div>
+
+        <div class="auth-columns">
+            <div class="clash-card">
+                <h4 class="label-yellow">REGISTER</h4>
+                <EditForm Model="regModel" OnValidSubmit="HandleRegister" FormName="reg_system">
+                    <DataAnnotationsValidator />
+                    <InputText placeholder="Full Name" @bind-Value="regModel.FullName" class="clash-input" autocomplete="off" />
+                    <InputText placeholder="Email" @bind-Value="regModel.Email" class="clash-input" autocomplete="off" />
+                    <div class="pass-box">
+                        <input type="@(showRegPass ? "text" : "password")" placeholder="Password" @bind="regModel.Password" @bind:event="oninput" class="clash-input" autocomplete="new-password" />
+                        <span class="clash-eye" @onclick="() => showRegPass = !showRegPass">👁️</span>
+                    </div>
+                    <button type="submit" class="clash-btn-pink">Register</button>
+                </EditForm>
+            </div>
+
+            <div class="clash-card">
+                <h4 class="label-yellow">SIGN IN</h4>
+                <EditForm Model="loginModel" OnValidSubmit="HandleLogin" FormName="login_system">
+                    <InputText placeholder="Username or email" @bind-Value="loginModel.Email" class="clash-input" autocomplete="one-time-code" />
+                    <div class="pass-box">
+                        <input type="@(showLoginPass ? "text" : "password")" placeholder="Password" @bind="loginModel.Password" @bind:event="oninput" class="clash-input" autocomplete="one-time-code" />
+                        <span class="clash-eye" @onclick="() => showLoginPass = !showLoginPass">👁️</span>
+                    </div>
+                    <button type="submit" class="clash-btn-pink">Sign In</button>
+                </EditForm>
+            </div>
+        </div>
+        @if (!string.IsNullOrEmpty(msg))
+        {
+            <div class="clash-status">@msg</div>
+        }
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromForm] private UserAccount regModel { get; set; } = new();
+    [SupplyParameterFromForm] private LoginRequest loginModel { get; set; } = new();
+    private bool showRegPass, showLoginPass;
+    private string msg = "";
+    private static List<UserAccount> UsersDb = new();
+    private const string FilePath = "users.json";
+
+    protected override void OnInitialized()
+    {
+        LoadData(); // Load saved users when page starts
+    }
+
+    private void HandleRegister()
+    {
+        if (UsersDb.Any(u => u.Email.Equals(regModel.Email, StringComparison.OrdinalIgnoreCase)))
+        {
+            msg = "User already exists!";
+        }
+        else
+        {
+            UsersDb.Add(new UserAccount { FullName = regModel.FullName, Email = regModel.Email, Password = regModel.Password });
+            SaveData(); // Save to file
+            msg = "Account created and saved!";
+            regModel = new();
+        }
+    }
+
+    private void HandleLogin()
+    {
+        var user = UsersDb.FirstOrDefault(u => u.Email.Equals(loginModel.Email, StringComparison.OrdinalIgnoreCase) && u.Password == loginModel.Password);
+        if (user != null) NavManager.NavigateTo("/game");
+        else msg = "Login failed. Ensure you registered correctly.";
+    }
+
+    private void SaveData()
+    {
+        var json = JsonSerializer.Serialize(UsersDb);
+        File.WriteAllText(FilePath, json);
+    }
+
+    private void LoadData()
+    {
+        if (File.Exists(FilePath))
+        {
+            var json = File.ReadAllText(FilePath);
+            UsersDb = JsonSerializer.Deserialize<List<UserAccount>>(json) ?? new();
+        }
+    }
+
+    public class UserAccount
+    {
+        [Required] public string FullName { get; set; } = "";
+        [Required, EmailAddress] public string Email { get; set; } = "";
+        [Required] public string Password { get; set; } = "";
+    }
+    public class LoginRequest { public string Email { get; set; } = ""; public string Password { get; set; } = ""; }
+} *@
+
+@page "/"
+
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Text.Json
+@inject NavigationManager NavManager
+@rendermode InteractiveServer
+
+@if (isInitialLoading)
+{
+    <div class="full-screen-loader">
+        <img src="/images/intro.jpg" class="bg-fill" />
+        <div class="loader-overlay">
+            <h1 class="clash-title">ENTERING KINGDOM...</h1>
+        </div>
+    </div>
+}
+else if (isProcessingLogin)
+{
+    <div class="full-screen-loader">
+        <img src="images/fight 3.gif" class="bg-fill" />
+        <div class="loader-overlay">
+            <h1 class="clash-title">JOINING BATTLE...</h1>
+        </div>
+    </div>
+}
+else
+{
+    <div class="clash-bg">
+        <div class="main-frame">
+            <div class="header-area text-center">
+                <h2 class="clash-title">Gaming Login Form</h2>
+                <p class="clash-subtitle">Welcome. Register or Sign in.</p>
+            </div>
+
+            <div class="auth-columns">
+                <div class="clash-card">
+                    <h4 class="label-yellow">REGISTER</h4>
+                    <EditForm Model="regModel" OnValidSubmit="HandleRegister" FormName="reg_final">
+                        <DataAnnotationsValidator />
+                        <InputText placeholder="Full Name" @bind-Value="regModel.FullName" class="clash-input" autocomplete="off" />
+                        <InputText placeholder="Email" @bind-Value="regModel.Email" class="clash-input" autocomplete="off" />
+                        <div class="pass-box">
+                            <input type="@(showRegPass ? "text" : "password")" placeholder="Password" @bind="regModel.Password" @bind:event="oninput" class="clash-input" autocomplete="new-password" />
+                            <span class="clash-eye" @onclick="() => showRegPass = !showRegPass">👁️</span>
+                        </div>
+                        <button type="submit" class="clash-btn-pink">Register</button>
+                    </EditForm>
+                </div>
+
+                <div class="clash-card">
+                    <h4 class="label-yellow">SIGN IN</h4>
+                    <EditForm Model="loginModel" OnValidSubmit="HandleLogin" FormName="login_final">
+                        <InputText placeholder="Username or email" @bind-Value="loginModel.Email" class="clash-input" autocomplete="one-time-code" />
+                        <div class="pass-box">
+                            <input type="@(showLoginPass ? "text" : "password")" placeholder="Password" @bind="loginModel.Password" @bind:event="oninput" class="clash-input" autocomplete="one-time-code" />
+                            <span class="clash-eye" @onclick="() => showLoginPass = !showLoginPass">👁️</span>
+                        </div>
+                        <button type="submit" class="clash-btn-pink">Sign In</button>
+                    </EditForm>
+                </div>
+            </div>
+            @if (!string.IsNullOrEmpty(msg))
+            {
+                <div class="clash-status">@msg</div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    private UserAccount regModel = new();
+    private LoginRequest loginModel = new();
+    private bool isInitialLoading = true;
+    private bool isProcessingLogin = false;
+    private bool showRegPass, showLoginPass;
+    private string msg = "";
+
+    // THE FILE SYSTEM
+    private static List<UserAccount> UsersDb = new();
+    private string FilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "data", "users.json");
+
+    protected override async Task OnInitializedAsync()
+    { 
+        LoadUsers(); // Pull users from the file when page starts
+        await Task.Delay(5000); // 4 Seconds Intro
+        isInitialLoading = false;
+    }
+
+    private void HandleRegister()
+    {
+        if (UsersDb.Any(u => u.Email.Equals(regModel.Email, StringComparison.OrdinalIgnoreCase)))
+        {
+            msg = "Account already exists!";
+        }
+        else
+        {
+            UsersDb.Add(new UserAccount { FullName = regModel.FullName, Email = regModel.Email, Password = regModel.Password });
+            SaveUsers(); // Push to file
+            msg = "Saved to Database! Now Sign In.";
+            regModel = new();
+        }
+    }
+
+    private async Task HandleLogin()
+    {
+        var user = UsersDb.FirstOrDefault(u => u.Email.Equals(loginModel.Email, StringComparison.OrdinalIgnoreCase) && u.Password == loginModel.Password);
+        if (user != null)
+        {
+            isProcessingLogin = true;
+            StateHasChanged();
+            await Task.Delay(4000); // 3 Seconds Battle
+            NavManager.NavigateTo("/home");
+        }
+        else { msg = "Invalid Login! Did you register?"; }
+    }
+
+    private void SaveUsers()
+    {
+        var dir = Path.GetDirectoryName(FilePath);
+        if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+        File.WriteAllText(FilePath, JsonSerializer.Serialize(UsersDb));
+    }
+
+    private void LoadUsers()
+    {
+        if (File.Exists(FilePath))
+        {
+            var json = File.ReadAllText(FilePath);
+            UsersDb = JsonSerializer.Deserialize<List<UserAccount>>(json) ?? new();
+        }
+    }
+
+    public class UserAccount
+    {
+        [Required] public string FullName { get; set; } = "";
+        [Required] public string Email { get; set; } = "";
+        [Required] public string Password { get; set; } = "";
+    }
+    public class LoginRequest { public string Email { get; set; } = ""; public string Password { get; set; } = ""; }
+}
