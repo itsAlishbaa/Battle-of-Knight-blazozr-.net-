@@ -13,19 +13,19 @@
         <div class="lobby-container-new" style="padding: 20px; font-family: 'Segoe UI', sans-serif; color: white;">
             
             <div class="lobby-top-heading" style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
-                <span class="games-badge" style="background: #ea580c; color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9rem;">3</span>
-                <h1 style="font-size: 1.8rem; font-weight: 800; letter-spacing: 1px; margin: 0;">AVAILABLE GAMES</h1>
+                <span class="games-badge" style="background: #ea580c; color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9rem;">2 Levels Available</span>
+                <h1 style="font-size: 1.8rem; font-weight: 800; letter-spacing: 1px; margin: 0;">AVAILABLE CHALLENGES</h1>
             </div>
 
             <div class="preview-dashboard-box" style="display: flex; gap: 20px; background: rgba(15, 23, 42, 0.4); border: 1px solid #334155; border-radius: 12px; padding: 25px; min-height: 480px;">
                 
-                <div class="preview-card-left" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                <div class="preview-card-left" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: rgba(30, 27, 75, 0.2); padding: 15px; border-radius: 8px; border: 1px solid #4338ca;">
                     <div>
                         <span class="lvl-tag" style="color: #fbbf24; font-weight: 800; font-size: 0.85rem; letter-spacing: 1px;">LEVEL 01</span>
-                        <h2 class="lvl-title" style="font-size: 1.8rem; font-weight: 900; margin: 5px 0 20px 0; color: #f8fafc;">THE SKELETON GATE</h2>
+                        <h2 class="lvl-title" style="font-size: 1.5rem; font-weight: 900; margin: 5px 0 15px 0; color: #f8fafc;">THE SKELETON GATE</h2>
                         
-                        <div class="castle-box-container" style="background: #1e1b4b; border: 2px solid #7c3aed; border-radius: 8px; padding: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; box-shadow: 0 0 20px rgba(124, 58, 237, 0.2);">
-                            <svg width="80" height="80" viewBox="0 0 100 100">
+                        <div class="castle-box-container" style="background: #1e1b4b; border: 2px solid #7c3aed; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; box-shadow: 0 0 20px rgba(124, 58, 237, 0.2);">
+                            <svg width="60" height="60" viewBox="0 0 100 100">
                                 <rect x="25" y="45" width="50" height="40" fill="#a78bfa" rx="4" />
                                 <rect x="20" y="35" width="12" height="50" fill="#7c3aed" rx="2" />
                                 <rect x="68" y="35" width="12" height="50" fill="#7c3aed" rx="2" />
@@ -35,21 +35,46 @@
                                 <rect x="42" y="65" width="16" height="20" fill="#1e1b4b" rx="8" />
                             </svg>
 
-                            <div class="dashboard-action-triggers" style="margin-top: 20px; display: flex; gap: 10px;">
-                                <button class="action-btn-start" @onclick="StartMatchArena" style="background: #ea580c; border: none; color: white; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 0 #9a3412;">
-                                    ▷ START BATTLE
+                            <div class="dashboard-action-triggers" style="margin-top: 15px; display: flex; gap: 10px;">
+                                <button class="action-btn-start" @onclick="() => StartMatchArena(1)" style="background: #ea580c; border: none; color: white; padding: 8px 16px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 0 #9a3412;">
+                                    ▷ START GAME
                                 </button>
-                                <button class="action-btn-start action-btn-restart" @onclick="ResetDashboardLayout" style="background: #334155; border: none; color: #cbd5e1; padding: 10px 15px; font-weight: bold; border-radius: 6px; cursor: pointer;">
+                                <button class="action-btn-start action-btn-restart" @onclick="ResetDashboardLayout" style="background: #334155; border: none; color: #cbd5e1; padding: 8px 12px; font-weight: bold; border-radius: 6px; cursor: pointer;">
                                     🔄 RESTART
                                 </button>
                             </div>
                         </div>
                     </div>
-                    
-                    <p class="lvl-desc-text" style="color: #94a3b8; line-height: 1.6; font-size: 0.95rem; margin: 0;">
-                        Navigate through the dungeon using conditional movement commands.
-                        Master if-else logic to avoid traps and reach the treasure.
-                        Learn decision-making fundamentals dynamically.
+                    <p class="lvl-desc-text" style="color: #94a3b8; line-height: 1.5; font-size: 0.85rem; margin: 0;">
+                        Navigate through the dungeon using conditional movement commands. Master basic melee logic to defeat the Gatekeeper.
+                    </p>
+                </div>
+
+                <div class="preview-card-left" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: rgba(124, 45, 18, 0.1); padding: 15px; border-radius: 8px; border: 1px solid #ea580c;">
+                    <div>
+                        <span class="lvl-tag" style="color: #f97316; font-weight: 800; font-size: 0.85rem; letter-spacing: 1px;">LEVEL 02</span>
+                        <h2 class="lvl-title" style="font-size: 1.5rem; font-weight: 900; margin: 5px 0 15px 0; color: #f8fafc;">FIRE BALLS ARENA</h2>
+                        
+                        <div class="castle-box-container" style="background: #2c1001; border: 2px solid #ea580c; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; box-shadow: 0 0 20px rgba(234, 88, 12, 0.2);">
+                            <svg width="60" height="60" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="25" fill="#ea580c" />
+                                <circle cx="50" cy="50" r="15" fill="#facc15" />
+                                <path d="M 25 50 Q 0 40 10 25 Q 25 40 35 45 Z" fill="#ef4444" />
+                                <path d="M 25 55 Q -5 65 5 45 Q 20 50 30 52 Z" fill="#f97316" />
+                            </svg>
+
+                            <div class="dashboard-action-triggers" style="margin-top: 15px; display: flex; gap: 10px;">
+                                <button class="action-btn-start" @onclick="() => StartMatchArena(2)" style="background: #dc2626; border: none; color: white; padding: 8px 16px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 0 #991b1b;">
+                                    🔥 START GAME
+                                </button>
+                                <button class="action-btn-start action-btn-restart" @onclick="ResetDashboardLayout" style="background: #334155; border: none; color: #cbd5e1; padding: 8px 12px; font-weight: bold; border-radius: 6px; cursor: pointer;">
+                                    🔄 RESTART
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="lvl-desc-text" style="color: #94a3b8; line-height: 1.5; font-size: 0.85rem; margin: 0;">
+                        Survival Challenge! Avoid incoming magic projectiles from the skeleton mage. Perfect timing with Shield [W] is required.
                     </p>
                 </div>
 
@@ -64,20 +89,16 @@
                     <div class="code-editor-mock" style="padding: 20px; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.9rem; line-height: 1.6; overflow-y: auto; color: #e2e8f0;">
                         <pre style="margin: 0;"><span style="color: #f43f5e;">public class</span> <span style="color: #60a5fa;">CombatEngine</span>
 {
-    <span style="color: #f43f5e;">void</span> <span style="color: #34d399;">ProcessMovement</span>()
+    <span style="color: #f43f5e;">void</span> <span style="color: #34d399;">ProcessMovement</span>(<span style="color: #f43f5e;">int</span> round)
     {
-        <span style="color: #fbbf24;">if</span> (enemyAhead)
+        <span style="color: #fbbf24;">if</span> (round == 2)
         {
-            <span style="color: #a78bfa;">MoveLeft</span>();
-        }
-        <span style="color: #fbbf24;">else if</span> (treasureDetected)
-        {
-            <span style="color: #a78bfa;">MoveForward</span>();
-            <span style="color: #a78bfa;">CollectItem</span>();
+            <span style="color: #34d399;">ActivateShieldAura</span>();
+            <span style="color: #a78bfa;">EvadeFireballs</span>();
         }
         <span style="color: #fbbf24;">else</span>
         {
-            <span style="color: #a78bfa;">MoveRight</span>();
+            <span style="color: #a78bfa;">ExecuteMeleeAttack</span>();
         }
     }
 }</pre>
@@ -95,11 +116,15 @@
         {
             <div class="intro-vs-overlay">
                 <div class="intro-vs-content">
+                    <h1 class="intro-title knight-text">KNIGHT</h1>
+                    <div class="intro-vs-badge">VS</div>
                     @if (currentRound == 1)
                     {
-                        <h1 class="intro-title knight-text">KNIGHT</h1>
-                        <div class="intro-vs-badge">VS</div>
                         <h1 class="intro-title skeleton-text">SKELETON</h1>
+                    }
+                    else
+                    {
+                        <h1 class="intro-title skeleton-text" style="color: #f97316;">FIRE MAGE</h1>
                     }
                     <div class="intro-round-title">ROUND @currentRound</div>
                     <div class="intro-subtext">GET READY TO FIGHT!</div>
@@ -383,7 +408,6 @@
                                     <g transform="translate(14, 26) rotate(20)">
                                         <path d="M 0 0 L 22 8" stroke="url(#boneGrad)" stroke-width="3" stroke-linecap="round" />
                                         <line x1="18" y1="-18" x2="18" y2="45" stroke="#451a03" stroke-width="2.5" stroke-linecap="round" />
-                                        <path d="M 19 -10 C 28 -15, 38 -7, 35 12 C 32 26, 24 28, 19 25 Z" fill="url(#steelBlade)" stroke="#1e2937" />
                                         <path d="M 18 -3 L 12 3 L 18 9 Z" fill="url(#goldTrim)" />
                                     </g>
                                 }
@@ -469,6 +493,7 @@
 </div>
 
 @code {
+    private string currentTheme = "theme-dark";
     private bool isGameStarted = false;
     
     private int playerHP = 100;
@@ -492,220 +517,287 @@
     private int fireballX = 1000;
     private bool isFireballActive = false;
     private bool isRunning = false;
-
-    private Timer gameLoopTimer;
-    private bool isDisposed = false;
     private bool showSettings = false;
-    private string currentTheme = "theme-dark";
 
-    private string skyColorTop = "#0f051d"; private string skyColorMid = "#2d0b3d"; private string skyColorBot = "#540d47";
-    private string mountainColorTop = "#3d1442"; private string mountainColorBot = "#180721"; private string mountainFrontColor = "#13051a";
-    private string groundColorTop = "#1c162b"; private string groundColorBot = "#0e0a17";
-    private string cloudColor1 = "#421245"; private string cloudColor2 = "#6a1b51";
-    private string gridLineColor = "#ff2a74";
+    // Theme Colors
+    private string skyColorTop = "#020617";
+    private string skyColorMid = "#0f172a";
+    private string skyColorBot = "#1e1b4b";
+    private string cloudColor1 = "#312e81";
+    private string cloudColor2 = "#4338ca";
+    private string mountainColorTop = "#111827";
+    private string mountainColorBot = "#1f2937";
+    private string mountainFrontColor = "#111827";
+    private string groundColorTop = "#020617";
+    private string groundColorBot = "#0f172a";
+    private string gridLineColor = "#38bdf8";
 
-    protected override void OnInitialized()
+    // HRE ENGINE KA REAL TIMER FIXED
+    private System.Timers.Timer? gameLoopTimer;
+
+    private void StartMatchArena(int targetRound)
     {
-        gameLoopTimer = new Timer(150);
-        gameLoopTimer.Elapsed += OnGameEngineTick;
-        gameLoopTimer.AutoReset = true;
-        ApplyThemeStyles("theme-dark");
-    }
+        // Purane chalte hue timer ko saaf karo pehle
+        gameLoopTimer?.Stop();
+        gameLoopTimer?.Dispose();
 
-    private void StartMatchArena()
-    {
+        currentRound = targetRound;
         isGameStarted = true;
-        TriggerIntroSequence();
-    }
-
-    private void ResetDashboardLayout()
-    {
-        isGameStarted = false;
-        try { gameLoopTimer?.Stop(); } catch (Exception) { }
+        showIntro = true;
+        isRoundOver = false;
         playerHP = 100;
         enemyHP = 100;
         playerX = 150;
         enemyX = 1000;
-        currentRound = 1;
-        isRoundOver = false;
-    }
-
-    private void TriggerIntroSequence()
-    {
-        if (isDisposed) return;
-
-        showIntro = true;
-        battleStatus = "intro-phase";
-        isFireballActive = false;
+        playerPose = "Idle";
+        enemyPose = "Idle";
         
-        try { gameLoopTimer?.Stop(); } catch (ObjectDisposedException) { return; }
-
-        Task.Delay(2500).ContinueWith(_ => InvokeAsync(() =>
+        if (currentRound == 2)
         {
-            if (isDisposed || isRoundOver) return;
+            isFireballActive = true;
+            fireballX = 1000;
+            lastMessage = "Level 2 Initiated: Fireball Evasion Sequence Active!";
+        }
+        else
+        {
+            isFireballActive = false;
+            lastMessage = "Level 1 Initiated: Melee Combat Stance Engaged.";
+        }
 
+        // Auto hide intro overlay after 2 seconds
+        var introTimer = new System.Timers.Timer(2000);
+        introTimer.Elapsed += (s, e) =>
+        {
             showIntro = false;
-            battleStatus = "loop-running";
-            lastMessage = currentRound == 1 ? "Round 1 Start! Approach the enemy!" : "Round 2 Started! Skeleton casts fireballs!";
+            introTimer.Stop();
+            introTimer.Dispose();
             
-            if (!isPaused && !isRoundOver)
-            {
-                try { gameLoopTimer?.Start(); } catch (ObjectDisposedException) { }
-            }
-            StateHasChanged();
-        }));
+            // INTRO KHATAM HOTAY HI GAME LOOP ENGINE START
+            StartGameLoop();
+            InvokeAsync(StateHasChanged);
+        };
+        introTimer.Start();
     }
 
-    private int aiActionCooldown = 0;
-
-    private void OnGameEngineTick(object sender, ElapsedEventArgs e)
+    // NAYA FUNCTION: Jo Game Engine Loop ko har 50ms baad chalaye ga
+    private void StartGameLoop()
     {
-        if (isPaused || isRoundOver || showIntro || isDisposed || !isGameStarted) return;
+        gameLoopTimer = new System.Timers.Timer(50); // 50 milliseconds tick speed
+        gameLoopTimer.Elapsed += OnGameTick;
+        gameLoopTimer.AutoReset = true;
+        gameLoopTimer.Start();
+    }
+
+    // NAYA FUNCTION: Jahan Skeleton ki Fight AI aur Fireball ki movement real-time calculate hogi
+    private void OnGameTick(object? sender, System.Timers.ElapsedEventArgs e)
+    {
+        if (!isGameStarted || showIntro || isRoundOver || isPaused) return;
 
         InvokeAsync(() =>
         {
-            if (isDisposed || isRoundOver) return;
+            int distance = Math.Abs(playerX - enemyX);
 
-            // Simple Chase logic loop tracking
-            int distance = Math.Abs(enemyX - playerX);
-            if (distance > 80 && currentRound == 1)
+            // --- ROUND 1 SKELETON AI ---
+            if (currentRound == 1)
             {
-                enemyX -= 15;
-                enemyPose = "Run";
-            }
-            else if (currentRound == 1)
-            {
-                enemyPose = "Attack";
-                if (playerPose != "Shield")
+                if (distance > 90)
                 {
-                    playerHP -= 5;
-                    playerPose = "Hit";
-                    ClearPlayerPoseDelay(200);
-                }
-            }
-
-            if (currentRound == 2)
-            {
-                if (!isFireballActive)
-                {
-                    aiActionCooldown++;
-                    if (aiActionCooldown >= 10)
-                    {
-                        enemyPose = "Attack";
-                        fireballX = enemyX - 60;
-                        isFireballActive = true;
-                        aiActionCooldown = 0;
-                        ClearEnemyPoseDelay(400);
-                    }
+                    enemyX -= 5; // Skeleton Knight ki taraf barhega
+                    enemyPose = "Idle";
                 }
                 else
                 {
-                    fireballX -= 45;
-                    if (fireballX <= (playerX + 65) && fireballX >= playerX)
+                    // Range me aate hi skeleton attack karega
+                    enemyPose = "Attack";
+                    
+                    if (playerPose != "Shield" && playerPose != "Hit")
                     {
-                        isFireballActive = false;
-                        if (playerPose == "Shield")
-                        {
-                            knightScore += 150;
-                        }
-                        else
-                        {
-                            playerHP -= 20;
-                            playerPose = "Hit";
-                            ClearPlayerPoseDelay(300);
-                        }
+                        playerHP = Math.Max(0, playerHP - 2); // Player damage layer
+                        playerPose = "Hit";
+                        lastMessage = "Skeleton deals damage! Use Shield [W]!";
+                        
+                        if (playerHP <= 0) HandleRoundLoss();
+                        
+                        // Hit stance reset delay
+                        Task.Delay(300).ContinueWith(_ => { if (playerPose == "Hit") playerPose = "Idle"; InvokeAsync(StateHasChanged); });
+                    }
+                    else if (playerPose == "Shield")
+                    {
+                        lastMessage = "Attack Blocked successfully!";
                     }
                 }
             }
 
-            if (playerHP <= 0)
+            // --- ROUND 2 FIREBALL TRACKER ---
+            if (currentRound == 2)
             {
-                playerHP = 0;
-                playerPose = "Dead";
-                EndRound(false);
+                if (isFireballActive)
+                {
+                    enemyPose = "Attack";
+                    fireballX -= 25; // Fireball left side pe slide karegi fastly
+
+                    // Fireball hits player detection
+                    if (Math.Abs(fireballX - playerX) < 40)
+                    {
+                        isFireballActive = false; // Reset object
+                        
+                        if (playerPose == "Shield")
+                        {
+                            knightScore += 100;
+                            lastMessage = "Fireball Blocked! +100 Points.";
+                        }
+                        else
+                        {
+                            playerHP = Math.Max(0, playerHP - 20);
+                            playerPose = "Hit";
+                            lastMessage = "Ouch! Fireball hit you! -20 HP.";
+                            if (playerHP <= 0) HandleRoundLoss();
+                            
+                            Task.Delay(300).ContinueWith(_ => { if (playerPose == "Hit") playerPose = "Idle"; InvokeAsync(StateHasChanged); });
+                        }
+                        
+                        // Nayi fireball respawn timer setup automatically
+                        RespawnFireball();
+                    }
+                    else if (fireballX < 0) // Screen se baahir nikal gayi agar
+                    {
+                        isFireballActive = false;
+                        RespawnFireball();
+                    }
+                }
             }
+
             StateHasChanged();
         });
     }
 
-    private void HandleKeyPress(KeyboardEventArgs e)
+    private void RespawnFireball()
     {
-        if (!isGameStarted || isRoundOver || showIntro) return;
-
-        if (e.Key == "ArrowRight" || e.Key == "d") MoveForward();
-        if (e.Key == "ArrowLeft" || e.Key == "a") MoveBackward();
-        if (e.Key == " " || e.Key == "Spacebar") TriggerAttack();
-        if (e.Key == "w" || e.Key == "W") TriggerShield();
-    }
-
-    private void MoveForward() { playerX += isRunning ? 30 : 15; playerPose = "Run"; ClearPlayerPoseDelay(200); }
-    private void MoveBackward() { playerX -= isRunning ? 30 : 15; playerPose = "Run"; ClearPlayerPoseDelay(200); }
-    
-    private void TriggerAttack()
-    {
-        playerPose = "Attack";
-        if (Math.Abs(enemyX - playerX) <= 110)
+        Task.Delay(1000).ContinueWith(_ =>
         {
-            enemyHP -= 15;
-            enemyPose = "Hit";
-            knightScore += 50;
-            ClearEnemyPoseDelay(200);
-            if (enemyHP <= 0) { enemyHP = 0; enemyPose = "Dead"; EndRound(true); }
-        }
-        ClearPlayerPoseDelay(250);
+            if (isGameStarted && !isRoundOver)
+            {
+                fireballX = enemyX - 40;
+                isFireballActive = true;
+                InvokeAsync(StateHasChanged);
+            }
+        });
     }
-    
-    private void TriggerShield() { playerPose = "Shield"; ClearPlayerPoseDelay(600); }
-    private void ToggleRun() { isRunning = !isRunning; }
-    private void ToggleSettings() { showSettings = !showSettings; }
 
-    private void EndRound(bool playerWon)
+    private void HandleRoundLoss()
     {
         isRoundOver = true;
         gameLoopTimer?.Stop();
-        if (playerWon)
+        roundOverMessage = "GAME OVER! Dark Magic Defeated You.";
+    }
+
+    private void ResetDashboardLayout()
+    {
+        gameLoopTimer?.Stop();
+        isGameStarted = false;
+        isRoundOver = false;
+        isFireballActive = false;
+        currentRound = 1;
+        playerHP = 100;
+        enemyHP = 100;
+        lastMessage = "Dashboard Re-initialized. Choose a Level.";
+    }
+
+    private void ToggleSettings() => showSettings = !showSettings;
+
+    private void ChangeTheme(string theme)
+    {
+        currentTheme = theme;
+        if (theme == "theme-light")
         {
-            roundOverMessage = currentRound == 1 ? "🎉 ROUND 1 VICTORY!" : "🏆 TOURNAMENT CHAMPION!";
-            isTournamentWon = currentRound == 2;
+            skyColorTop = "#bae6fd"; skyColorMid = "#7dd3fc"; skyColorBot = "#38bdf8";
+            groundColorTop = "#e2e8f0"; groundColorBot = "#cbd5e1"; gridLineColor = "#0284c7";
         }
         else
         {
-            roundOverMessage = "💀 YOU DIED! DEFEAT.";
+            skyColorTop = "#020617"; skyColorMid = "#0f172a"; skyColorBot = "#1e1b4b";
+            groundColorTop = "#020617"; groundColorBot = "#0f172a"; gridLineColor = "#38bdf8";
         }
+    }
+
+    private void ToggleRun() => isRunning = !isRunning;
+    private void MoveForward() => playerX = Math.Min(1100, playerX + (isRunning ? 40 : 20));
+    private void MoveBackward() => playerX = Math.Max(50, playerX - (isRunning ? 40 : 20));
+
+    private void TriggerShield()
+    {
+        playerPose = "Shield";
+        lastMessage = "Knight is blocking attacks!";
+        Task.Delay(800).ContinueWith(_ =>
+        {
+            if (playerPose == "Shield") playerPose = "Idle";
+            InvokeAsync(StateHasChanged);
+        });
+    }
+
+    private void TriggerAttack()
+    {
+        if (playerPose == "Hit") return;
+        playerPose = "Attack";
+        
+        if (Math.Abs(playerX - enemyX) < 120 && currentRound == 1)
+        {
+            enemyHP = Math.Max(0, enemyHP - 15);
+            knightScore += 50;
+            lastMessage = "Hit Successful! Enemy HP Reduced.";
+            if (enemyHP <= 0) HandleRoundWin();
+        }
+        else if (currentRound == 2)
+        {
+            lastMessage = "Fire Mage is too far! Just Survive and Block!";
+        }
+        else
+        {
+            lastMessage = "Attack missed! Move closer to the target.";
+        }
+
+        Task.Delay(400).ContinueWith(_ =>
+        {
+            if (playerPose == "Attack") playerPose = "Idle";
+            InvokeAsync(StateHasChanged);
+        });
+    }
+
+    private void HandleRoundWin()
+    {
+        isRoundOver = true;
+        gameLoopTimer?.Stop();
+        roundOverMessage = currentRound == 1 ? "ROUND 1 CLEAR! Gatekeeper Defeated." : "VICTORY! Tournament Won.";
     }
 
     private void ProceedToNextMatchState()
     {
-        if (isTournamentWon || playerHP <= 0)
+        if (currentRound == 1)
         {
-            ResetDashboardLayout();
+            StartMatchArena(2);
         }
         else
         {
-            currentRound = 2;
-            enemyHP = 100;
-            playerX = 150;
-            enemyX = 1000;
-            isRoundOver = false;
-            TriggerIntroSequence();
+            ResetDashboardLayout();
         }
     }
 
-    private void ClearPlayerPoseDelay(int ms) => Task.Delay(ms).ContinueWith(_ => InvokeAsync(() => { if (playerPose != "Dead" && !isRoundOver) playerPose = "Idle"; StateHasChanged(); }));
-    private void ClearEnemyPoseDelay(int ms) => Task.Delay(ms).ContinueWith(_ => InvokeAsync(() => { if (enemyPose != "Dead" && !isRoundOver) enemyPose = "Idle"; StateHasChanged(); }));
-    
-    private void ChangeTheme(string theme) { currentTheme = theme; ApplyThemeStyles(theme); }
-    private void ApplyThemeStyles(string theme)
+    private void HandleKeyPress(KeyboardEventArgs e)
     {
-        if (theme == "theme-light") { skyColorTop = "#e0f2fe"; skyColorMid = "#bae6fd"; skyColorBot = "#7dd3fc"; gridLineColor = "#0284c7"; }
-        else if (theme == "theme-colorblind") { skyColorTop = "#1e293b"; skyColorMid = "#334155"; skyColorBot = "#475569"; gridLineColor = "#e2e8f0"; }
-        else { skyColorTop = "#0f051d"; skyColorMid = "#2d0b3d"; skyColorBot = "#540d47"; gridLineColor = "#ff2a74"; }
+        if (!isGameStarted || showIntro || isRoundOver) return;
+        switch (e.Key)
+        {
+            case "ArrowRight": MoveForward(); break;
+            case "ArrowLeft": MoveBackward(); break;
+            case "Shift": ToggleRun(); break;
+            case "w": case "W": TriggerShield(); break;
+            case " ": TriggerAttack(); break;
+        }
     }
 
     public void Dispose()
     {
-        isDisposed = true;
+        gameLoopTimer?.Stop();
         gameLoopTimer?.Dispose();
     }
 }
-
