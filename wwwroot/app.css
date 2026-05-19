@@ -3133,3 +3133,19 @@ html, body {
     height: 100%;
     display: block;
 }
+.game-footer { /* Jo bhi aapke footer container ka naam hai */
+    display: flex;
+    justify-content: space-between; /* Yeh left aur right boxes ko corners me push karega */
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px;
+}
+.arcade-controls-box { /* Apne controls box ki class lagayein */
+    display: flex;
+    flex-direction: row; /* Buttons ko ek line mein laane ke liye */
+    align-items: center;
+    gap: 15px; /* Buttons ke darmiyan thoda faasla rakhne ke liye */
+    min-width: max-content; /* Yeh box ko zabardasti buttons ke mutabiq khol dega */
+    width: auto; /* Fixed width (e.g., 200px) hatayein agar lagi hui hai */
+    overflow: visible; /* Taki buttons katein nahi */
+}
