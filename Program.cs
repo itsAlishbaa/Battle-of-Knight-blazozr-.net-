@@ -15,6 +15,7 @@ builder.Services.AddSingleton<UserService>();
 // --- YE DO LINES LAZMI HONI CHAHIYEN BUILDER.BUILD SE PEHLE ---
 builder.Services.AddScoped<blazor_final_pro.Services.BattleEngine>();
 builder.Services.AddScoped<blazor_final_pro.Services.UserService>(); // <-- YE VALI LINE ADD KREIN!
+builder.Services.AddSingleton<ReviewService>();
 
 var app = builder.Build();
 
