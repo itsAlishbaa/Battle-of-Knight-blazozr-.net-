@@ -3133,3 +3133,40 @@ html, body {
     height: 100%;
     display: block;
 }
+/* Card ka size bara karne ke liye */
+.login-card, .register-card {
+    width: 100% !important;
+    max-width: 550px !important; /* Pehle se bara size */
+    min-height: 450px !important; /* Height bhi barha di */
+    padding: 35px !important; /* Andar ki space */
+    background: rgba(15, 23, 42, 0.9) !important; /* Dark gaming look */
+    border-radius: 12px !important;
+}
+
+    /* Card ke andar wale text boxes (inputs) ko bara karne ke liye */
+    .login-card input, .register-card input {
+        padding: 12px 15px !important;
+        font-size: 1.1rem !important; /* Text bara ho jaye ga */
+        margin-bottom: 18px !important;
+    }
+
+    /* Buttons ko bara aur gaming style dene ke liye */
+    .login-card button, .register-card button {
+        padding: 12px 25px !important;
+        font-size: 1.2rem !important;
+        font-weight: bold !important;
+    }
+/* Left side drawer ki width barhanay ke liye */
+.left-drawer, .sidebar, .nav-menu {
+    width: 760px !important; /* Isko 260px ya 280px kar lo, drawer bara ho jaye ga */
+    padding: 25px 15px !important;
+}
+
+    /* Drawer ke andar jo text/links hain unko bara karne ke liye */
+    .left-drawer a, .left-drawer .nav-link, .sidebar a {
+        font-size: 1.25rem !important; /* Text ka size bara kar diya */
+        font-weight: 700 !important; /* Bold look */
+        padding: 12px 15px !important; /* Buttons ke darmiyan space */
+        letter-spacing: 1px !important;
+        display: block !important;
+    }
