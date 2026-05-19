@@ -1,4 +1,786 @@
-﻿@page "/home"
+﻿@* @page "/home"
+@using blazor_final_pro.Services
+@using System.Timers
+@implements IDisposable
+@inject BattleEngine Engine
+@inject UserService UserSvc
+@rendermode InteractiveServer
+
+<div class="game-viewport @currentTheme" @onkeydown="HandleKeyPress" tabindex="0" style="outline: none;">
+
+    @if (!isGameStarted)
+    {
+        <div class="lobby-container-new" style="padding: 20px; font-family: 'Segoe UI', sans-serif; color: white;">
+            
+            <div class="lobby-top-heading" style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                <span class="games-badge" style="background: #ea580c; color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9rem;">3</span>
+                <h1 style="font-size: 1.8rem; font-weight: 800; letter-spacing: 1px; margin: 0;">AVAILABLE GAMES</h1>
+            </div>
+
+            <div class="preview-dashboard-box" style="display: flex; gap: 20px; background: rgba(15, 23, 42, 0.4); border: 1px solid #334155; border-radius: 12px; padding: 25px; min-height: 480px;">
+                
+                <div class="preview-card-left" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <span class="lvl-tag" style="color: #fbbf24; font-weight: 800; font-size: 0.85rem; letter-spacing: 1px;">LEVEL 01</span>
+                        <h2 class="lvl-title" style="font-size: 1.8rem; font-weight: 900; margin: 5px 0 20px 0; color: #f8fafc;">THE SKELETON GATE</h2>
+                        
+                        <div class="castle-box-container" style="background: #1e1b4b; border: 2px solid #7c3aed; border-radius: 8px; padding: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; box-shadow: 0 0 20px rgba(124, 58, 237, 0.2);">
+                            <svg width="80" height="80" viewBox="0 0 100 100">
+                                <rect x="25" y="45" width="50" height="40" fill="#a78bfa" rx="4" />
+                                <rect x="20" y="35" width="12" height="50" fill="#7c3aed" rx="2" />
+                                <rect x="68" y="35" width="12" height="50" fill="#7c3aed" rx="2" />
+                                <polygon points="20,35 26,20 32,35" fill="#f43f5e" />
+                                <polygon points="68,35 74,20 80,35" fill="#f43f5e" />
+                                <polygon points="41,45 50,30 59,45" fill="#f43f5e" />
+                                <rect x="42" y="65" width="16" height="20" fill="#1e1b4b" rx="8" />
+                            </svg>
+
+                            <div class="dashboard-action-triggers" style="margin-top: 20px; display: flex; gap: 10px;">
+                                <button class="action-btn-start" @onclick="() => StartMatchArena(1)" style="background: #ea580c; border: none; color: white; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 0 #9a3412;">
+                                    ▷ START BATTLE
+                                </button>
+                                <button class="action-btn-start action-btn-restart" @onclick="ResetDashboardLayout" style="background: #334155; border: none; color: #cbd5e1; padding: 10px 15px; font-weight: bold; border-radius: 6px; cursor: pointer;">
+                                    🔄 RESTART
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="lvl-desc-text" style="color: #94a3b8; line-height: 1.6; font-size: 0.95rem; margin: 0;">
+                        Navigate through the dungeon using conditional movement commands.
+                        Master if-else logic to avoid traps and reach the treasure.
+                        Learn decision-making fundamentals dynamically.
+                    </p>
+                </div>
+
+                <div class="preview-matrix-center" style="flex: 1.2; background: #090d16; border: 1px solid #ea580c; border-radius: 8px; display: flex; flex-direction: column;">
+                    <div class="matrix-window-top" style="background: #111827; padding: 10px 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #1f2937;">
+                        <span class="win-dot r" style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%;"></span>
+                        <span class="win-dot y" style="width: 10px; height: 10px; background: #eab308; border-radius: 50%;"></span>
+                        <span class="win-dot g" style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%;"></span>
+                        <span class="win-title-text" style="color: #94a3b8; font-size: 0.85rem; font-family: monospace; margin-left: 5px;">CombatEngine.cs</span>
+                    </div>
+
+                    <div class="code-editor-mock" style="padding: 20px; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.9rem; line-height: 1.6; overflow-y: auto; color: #e2e8f0;">
+                        <pre style="margin: 0;"><span style="color: #f43f5e;">public class</span> <span style="color: #60a5fa;">CombatEngine</span>
+{
+    <span style="color: #f43f5e;">void</span> <span style="color: #34d399;">ProcessMovement</span>()
+    {
+        <span style="color: #fbbf24;">if</span> (enemyAhead)
+        {
+            <span style="color: #a78bfa;">MoveLeft</span>();
+        }
+        <span style="color: #fbbf24;">else if</span> (treasureDetected)
+        {
+            <span style="color: #a78bfa;">MoveForward</span>();
+            <span style="color: #a78bfa;">CollectItem</span>();
+        }
+        <span style="color: #fbbf24;">else</span>
+        {
+            <span style="color: #a78bfa;">MoveRight</span>();
+        }
+    }
+}</pre>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="fight-footer-bg-text" style="text-align: center; font-size: 4rem; font-weight: 900; opacity: 0.03; font-family: 'Impact', sans-serif; letter-spacing: 10px; margin-top: 15px; user-select: none;">FIGHT CODE</div>
+        </div>
+    }
+    else
+    {
+        @if (showIntro)
+        {
+            <div class="intro-vs-overlay">
+                <div class="intro-vs-content">
+                    @if (currentRound == 1)
+                    {
+                        <h1 class="intro-title knight-text">KNIGHT</h1>
+                        <div class="intro-vs-badge">VS</div>
+                        <h1 class="intro-title skeleton-text">SKELETON</h1>
+                    }
+                    <div class="intro-round-title">ROUND @currentRound</div>
+                    <div class="intro-subtext">GET READY TO FIGHT!</div>
+                </div>
+            </div>
+        }
+
+        <button class="settings-gear-btn" @onclick="ToggleSettings">
+            <svg viewBox="0 0 24 24" class="gear-icon">
+                <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2-1.65zM12 15.5c-1.93 0-3-1.57-3-3.5s1.07-3.5 3-3.5 3 1.57 3 3.5-1.07 3.5-3 3.5z" />
+            </svg>
+        </button>
+
+        @if (showSettings)
+        {
+            <div class="settings-overlay" @onclick="ToggleSettings">
+                <div class="settings-card" @onclick:stopPropagation="true">
+                    <div class="settings-header">
+                        <h3>⚙️ DISPLAY CONFIG</h3>
+                        <button class="close-settings-btn" @onclick="ToggleSettings">✕</button>
+                    </div>
+                    <div class="settings-body">
+                        <p class="settings-label">SELECT VISUAL INTENSITY:</p>
+                        <div class="theme-options-grid">
+                            <button class="theme-btn btn-dark-theme @(currentTheme == "theme-dark" ? "active-theme" : "")" @onclick='() => ChangeTheme("theme-dark")'>
+                                0️ DARK MODE
+                            </button>
+                            <button class="theme-btn btn-light-theme @(currentTheme == "theme-light" ? "active-theme" : "")" @onclick='() => ChangeTheme("theme-light")'>
+                                ☀️ LIGHT MODE
+                            </button>
+                            <button class="theme-btn btn-cb-theme @(currentTheme == "theme-colorblind" ? "active-theme" : "")" @onclick='() => ChangeTheme("theme-colorblind")'>
+                                👁️ COLOR BLIND
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="game-header">
+            <div class="rpg-health-wrapper knight-side">
+                <div class="bar-and-score-column">
+                    <div class="bar-row">
+                        <div class="rpg-medallion">
+                            <svg class="medallion-heart" viewBox="0 0 32 32">
+                                <path d="M16,28.5 C16,28.5 2,20.5 2,11.5 C2,6.5 6,2.5 11,2.5 C14,2.5 16,5.5 16,5.5 C16,5.5 18,2.5 21,2.5 C26,2.5 30,6.5 30,11.5 C30,20.5 16,28.5 16,28.5 Z" />
+                            </svg>
+                        </div>
+                        <div class="rpg-bar-container-fantasy">
+                            <div class="rpg-bar-track-fantasy">
+                                <div class="rpg-bar-fill-fantasy" style="width: @(playerHP)%;">
+                                    <div class="bar-shine"></div>
+                                </div>
+                            </div>
+                            <div class="rpg-border-overlay"></div>
+                        </div>
+                    </div>
+                    <div class="individual-score knight-score">SCORE: @knightScore</div>
+                </div>
+            </div>
+            
+            <div class="score-container">
+                <div class="round-indicator-top">ROUND @currentRound</div>
+                <div class="vs-indicator">VS</div>
+            </div>
+            
+            <div class="rpg-health-wrapper skeleton-side">
+                <div class="bar-and-score-column">
+                    <div class="bar-row">
+                        <div class="rpg-medallion">
+                            <svg class="medallion-heart" viewBox="0 0 32 32">
+                                <path d="M16,28.5 C16,28.5 2,20.5 2,11.5 C2,6.5 6,2.5 11,2.5 C14,2.5 16,5.5 16,5.5 C16,5.5 18,2.5 21,2.5 C26,2.5 30,6.5 30,11.5 C30,20.5 16,28.5 16,28.5 Z" />
+                            </svg>
+                        </div>
+                        <div class="rpg-bar-container-fantasy">
+                            <div class="rpg-bar-track-fantasy">
+                                <div class="rpg-bar-fill-fantasy" style="width: @(enemyHP)%;">
+                                    <div class="bar-shine"></div>
+                                </div>
+                            </div>
+                            <div class="rpg-border-overlay"></div>
+                        </div>
+                    </div>
+                    <div class="individual-score skeleton-score">HP: @enemyHP</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-arena">
+            @if (isRoundOver)
+            {
+                <div class="game-over-overlay">
+                    <div class="game-over-box">
+                        <h2>@roundOverMessage</h2>
+                        <button class="arcade-3d-btn btn-green-3d play-again-btn" @onclick="ProceedToNextMatchState">
+                            <span class="arcade-btn-center">
+                                @(isTournamentWon || playerHP <= 0 ? "🔄 RESET TOURNAMENT" : "👉 PROCEED TO ROUND 2")
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            }
+
+            <svg viewBox="0 0 1200 450" class="game-svg">
+                <defs>
+                    <linearGradient id="animeSky" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="@skyColorTop" />
+                        <stop offset="50%" stop-color="@skyColorMid" />
+                        <stop offset="100%" stop-color="@skyColorBot" />
+                    </linearGradient>
+                    <linearGradient id="mountainGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="@mountainColorTop" />
+                        <stop offset="100%" stop-color="@mountainColorBot" />
+                    </linearGradient>
+                    <linearGradient id="groundGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="@groundColorTop" />
+                        <stop offset="100%" stop-color="@groundColorBot" />
+                    </linearGradient>
+                    <radialGradient id="fireballGlow" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#fff" />
+                        <stop offset="30%" stop-color="#ff9900" />
+                        <stop offset="100%" stop-color="#ff0000" stop-opacity="0" />
+                    </radialGradient>
+                    <linearGradient id="shieldAura" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#00f5d4" stop-opacity="0.8" />
+                        <stop offset="100%" stop-color="#00b4d8" stop-opacity="0.2" />
+                    </linearGradient>
+                    <linearGradient id="ironArmor" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#d1d5db" />
+                        <stop offset="40%" stop-color="#9ca3af" />
+                        <stop offset="100%" stop-color="#4b5563" />
+                    </linearGradient>
+                    <linearGradient id="goldTrim" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#fbbf24" />
+                        <stop offset="100%" stop-color="#b45309" />
+                    </linearGradient>
+                    <linearGradient id="steelBlade" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#ffffff" />
+                        <stop offset="50%" stop-color="#e5e7eb" />
+                        <stop offset="100%" stop-color="#9ca3af" />
+                    </linearGradient>
+                    <linearGradient id="boneGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#f8fafc" />
+                        <stop offset="60%" stop-color="#e2e8f0" />
+                        <stop offset="100%" stop-color="#cbd5e1" />
+                    </linearGradient>
+                </defs>
+
+                <rect width="1200" height="190" fill="url(#animeSky)" />
+                <path d="M 100 80 Q 250 20, 450 70 T 850 40 T 1150 90 L 1200 190 L 0 190 Z" fill="@cloudColor1" opacity="0.3" style="filter: blur(4px);" />
+                <path d="M 0 120 Q 200 60, 500 110 T 1000 70 L 1200 190 L 0 190 Z" fill="@cloudColor2" opacity="0.15" style="filter: blur(2px);" />
+                <path d="M 0 190 L 70 110 L 150 145 L 240 85 L 360 155 L 480 95 L 610 160 L 750 70 L 890 150 L 1020 80 L 1110 135 L 1200 190 Z" fill="url(#mountainGrad)" />
+                <path d="M 0 190 L 120 145 L 290 165 L 410 130 L 580 170 L 700 135 L 860 165 L 970 125 L 1100 155 L 1200 190 Z" fill="@mountainFrontColor" />
+                <rect x="0" y="190" width="1200" height="260" fill="url(#groundGrad)" />
+                
+                <g stroke="@gridLineColor" stroke-width="1.5" opacity="0.35">
+                    <line x1="600" y1="190" x2="-200" y2="450" />
+                    <line x1="600" y1="190" x2="100" y2="450" />
+                    <line x1="600" y1="190" x2="400" y2="450" />
+                    <line x1="600" y1="190" x2="600" y2="450" />
+                    <line x1="600" y1="190" x2="800" y2="450" />
+                    <line x1="600" y1="190" x2="1100" y2="450" />
+                    <line x1="600" y1="190" x2="1400" y2="450" />
+                    <line x1="0" y1="220" x2="1200" y2="220" stroke-width="0.8" opacity="0.4" />
+                    <line x1="0" y1="260" x2="1200" y2="260" stroke-width="1" opacity="0.5" />
+                    <line x1="0" y1="320" x2="1200" y2="320" stroke-width="1.2" opacity="0.6" />
+                    <line x1="0" y1="390" x2="1200" y2="390" stroke-width="1.5" opacity="0.7" />
+                </g>
+
+                <line x1="0" y1="190" x2="1200" y2="190" stroke="@gridLineColor" stroke-width="2.5" />
+                <text x="50%" y="130" dominant-baseline="middle" text-anchor="middle" fill="@gridLineColor" opacity="0.06" font-size="10rem" font-weight="900" style="user-select:none; font-family:'Impact', sans-serif; font-style: italic; letter-spacing: 4px;">FIGHT</text>
+
+                @if (currentRound == 2 && isFireballActive)
+                {
+                    <g transform="translate(@fireballX, 230)">
+                        <circle cx="0" cy="0" r="22" fill="url(#fireballGlow)" />
+                        <path d="M 0 -10 Q 25 0 45 -5 Q 20 5 0 10 Q 30 15 55 2 Q 15 -3 0 -10 Z" fill="#ff4500" transform="scale(-1, 1)" />
+                        <circle cx="-5" cy="0" r="8" fill="#ffcc00" />
+                    </g>
+                }
+
+                <g transform="translate(@(playerX), 190) scale(2.2)">
+                    <g class="pixel-knight-sprite-matrix @(playerPose.ToLower())">
+                        <ellipse cx="12" cy="72" rx="@(playerPose == "Dead" ? "22" : "14")" ry="4" fill="#000" opacity="0.35" />
+                        @if (playerPose == "Dead")
+                        {
+                            <g transform="rotate(90, 12, 60) translate(0, 10)">
+                                <path d="M 0 24 C 0 24, 11 20, 22 24 L 20 58 C 15 62, 7 62, 2 58 Z" fill="#4b5563" stroke="#1f2937" opacity="0.8" />
+                                <path d="M 3 22 C 3 8, 19 8, 19 22 Z" fill="#374151" stroke="#1f2937" />
+                                <path d="M -5 30 L 5 30 L 0 55 Z" fill="url(#steelBlade)" stroke="#1f2937" transform="rotate(-45)" />
+                            </g>
+                        }
+                        else
+                        {
+                            <path d="M -4 24 C -12 32, -15 55, -6 70 C 0 72, 8 68, 8 58 C 4 38, 2 26, 0 24 Z" fill="#b91c1c" stroke="#7f1d1d" stroke-width="1.2" />
+                            <path d="M 4 58 L 1 72 L 8 72 L 7 58 Z M 14 58 L 11 72 L 18 72 L 17 58 Z" fill="#374151" stroke="#1f2937" stroke-width="1.2" />
+                            <path d="M 0 68 L 8 68 L 8 72 L 0 72 Z M 10 68 L 18 68 L 18 72 L 10 72 Z" fill="url(#goldTrim)" />
+                            <path d="M -1 24 C -1 24, 11 19, 23 24 L 20 58 C 14 63, 6 63, 1 58 Z" fill="url(#ironArmor)" stroke="#111827" stroke-width="1.5" />
+                            <path d="M -3 24 C -5 17, 4 15, 6 24 Z M 17 24 C 19 15, 27 17, 25 24 Z" fill="url(#ironArmor)" stroke="#374151" />
+                            <path d="M 2 27 L 11 42 L 20 27" fill="none" stroke="url(#goldTrim)" stroke-width="2" />
+                            <rect x="1" y="52" width="20" height="4" fill="url(#goldTrim)" />
+                            <path d="M 2 22 C 2 6, 20 6, 20 22 Z" fill="url(#ironArmor)" stroke="#111827" stroke-width="1.5" />
+                            <path d="M 4 10 C 4 0, 18 0, 16 10 Z" fill="#dc2626" opacity="0.9" />
+                            <path d="M 6 12 L 18 12 L 16 18 L 6 18 Z" fill="#0f172a" />
+                            <rect x="8" y="14" width="7" height="2" fill="#38bdf8" opacity="@(playerPose == "Hit" ? "0.3" : "1")" />
+
+                            @if (playerPose == "Shield")
+                            {
+                                <g transform="translate(24, 16)">
+                                    <path d="M 6 -8 A 20 28 0 0 1 6 58 L -3 48 L -3 2 Z" fill="url(#shieldAura)" />
+                                    <path d="M -5 0 L 10 0 C 14 18, 14 28, 0 48 L -5 48 Z" fill="url(#ironArmor)" stroke="#111827" stroke-width="1.5" />
+                                    <path d="M -2 4 L 7 4 C 9 18, 9 25, 0 42 L -2 42 Z" fill="#991b1b" />
+                                    <circle cx="2" cy="22" r="4" fill="url(#goldTrim)" />
+                                </g>
+                            }
+                            else if (playerPose == "Attack")
+                            {
+                                <g transform="translate(20, 26) rotate(25)">
+                                    <circle cx="2" cy="2" r="4" fill="url(#goldTrim)" />
+                                    <rect x="4" y="-6" width="4" height="16" rx="1" fill="url(#goldTrim)" stroke="#78350f" stroke-width="0.5" />
+                                    <path d="M 8 -3 L 56 -3 L 64 2 L 56 7 L 8 7 Z" fill="url(#steelBlade)" stroke="#1f2937" stroke-width="1" />
+                                    <line x1="8" y1="2" x2="56" y2="2" stroke="#f3f4f6" stroke-width="0.8" />
+                                </g>
+                            }
+                            else
+                            {
+                                <g transform="translate(18, 28) rotate(-40)">
+                                    <circle cx="2" cy="2" r="3.5" fill="url(#ironArmor)" />
+                                    <rect x="4" y="-5" width="3" height="12" fill="url(#goldTrim)" />
+                                    <path d="M 7 -2 L 40 -2 L 45 2 L 40 6 L 7 6 Z" fill="url(#steelBlade)" stroke="#374151" />
+                                </g>
+                            }
+                        }
+                    </g>
+                </g>
+
+                <g transform="translate(@(enemyX), 190) scale(-2.2, 2.2)">
+                    <g class="skeleton-sprite-matrix @(enemyPose.ToLower())">
+                        <ellipse cx="8" cy="72" rx="@(enemyPose == "Dead" ? "20" : "12")" ry="3.5" fill="#000" opacity="0.4" />
+                        @if (enemyPose == "Dead")
+                        {
+                            <g transform="rotate(-90, 8, 65) translate(-10, 5)">
+                                <path d="M 0 46 C 0 44, 14 44, 14 46 L 12 54 C 9 56, 5 56, 2 54 Z" fill="url(#boneGrad)" opacity="0.6" />
+                                <circle cx="5" cy="12" r="3" fill="#334155" />
+                                <line x1="-5" y1="25" x2="15" y2="35" stroke="url(#boneGrad)" stroke-width="3" />
+                            </g>
+                        }
+                        else
+                        {
+                            <path d="M 2 56 L 1 72 L 5 72 L 5 56 Z M 12 56 L 11 72 L 15 72 L 14 56 Z" fill="url(#boneGrad)" stroke="#334155" stroke-width="0.6" />
+                            <circle cx="3" cy="56" r="2.5" fill="#cbd5e1" />
+                            <circle cx="13" cy="56" r="2.5" fill="#cbd5e1" />
+                            <path d="M -1 46 C -1 42, 15 42, 15 46 L 13 54 C 10 57, 4 57, 1 54 Z" fill="url(#boneGrad)" stroke="#334155" stroke-width="1" />
+                            <circle cx="3" cy="50" r="2" fill="#0f172a" />
+                            <circle cx="11" cy="50" r="2" fill="#0f172a" />
+                            <rect x="6" y="20" width="4" height="26" fill="url(#boneGrad)" />
+                            <path d="M -2 23 Q 7 19 16 23 M -4 28 Q 7 24 18 28 M -3 33 Q 7 29 17 33 M -1 38 Q 7 34 15 38" fill="none" stroke="url(#boneGrad)" stroke-width="2.6" stroke-linecap="round" />
+
+                            <g transform="translate(-1, 0)">
+                                <path d="M 2 12 C 2 2, 15 2, 15 12 C 15 16, 13 19, 13 21 L 4 21 C 4 19, 2 16, 2 12 Z" fill="url(#boneGrad)" stroke="#1e2937" stroke-width="1.2" />
+                                <path d="M 5 21 L 5 24 L 7 24 L 7 21 M 10 21 L 10 24 L 12 24 L 12 21" fill="url(#boneGrad)" stroke="#334155" stroke-width="0.6" />
+                                <circle cx="5.5" cy="11" r="2.5" fill="#000" />
+                                <circle cx="11.5" cy="11" r="2.5" fill="#000" />
+                                <circle cx="5.5" cy="11" r="1.2" fill="#ff0000" class="@(enemyPose == "Hit" ? "" : "eye-glow")" />
+                                <circle cx="11.5" cy="11" r="1.2" fill="#ff0000" class="@(enemyPose == "Hit" ? "" : "eye-glow")" />
+                                <polygon points="8,14 6.5,16.5 9.5,16.5" fill="#000" />
+                            </g>
+
+                            @if (enemyPose == "Attack")
+                            {
+                                @if (currentRound == 2)
+                                {
+                                    <g transform="translate(16, 24)">
+                                        <path d="M 0 0 L 18 -6" stroke="url(#boneGrad)" stroke-width="3" stroke-linecap="round" />
+                                        <circle cx="18" cy="-6" r="9" fill="#ff4500" opacity="0.9" />
+                                        <circle cx="18" cy="-6" r="5" fill="#fffb00" />
+                                    </g>
+                                }
+                                else
+                                {
+                                    <g transform="translate(14, 26) rotate(20)">
+                                        <path d="M 0 0 L 22 8" stroke="url(#boneGrad)" stroke-width="3" stroke-linecap="round" />
+                                        <line x1="18" y1="-18" x2="18" y2="45" stroke="#451a03" stroke-width="2.5" stroke-linecap="round" />
+                                        <path d="M 19 -10 C 28 -15, 38 -7, 35 12 C 32 26, 24 28, 19 25 Z" fill="url(#steelBlade)" stroke="#1e2937" />
+                                        <path d="M 18 -3 L 12 3 L 18 9 Z" fill="url(#goldTrim)" />
+                                    </g>
+                                }
+                            }
+                            else
+                            {
+                                <g transform="translate(-4, 22)">
+                                    <path d="M 9 3 L 3 16" stroke="url(#boneGrad)" stroke-width="2.8" stroke-linecap="round" />
+                                    <line x1="1" y1="-22" x2="1" y2="50" stroke="#5c2d16" stroke-width="2" />
+                                    <path d="M 1 -22 L -8 -10 L 1 2 L 10 -10 Z" fill="url(#steelBlade)" stroke="#1e2937" />
+                                    <rect x="-2" y="-5" width="6" height="4" fill="url(#goldTrim)" />
+                                </g>
+                            }
+                        }
+                    </g>
+                </g>
+            </svg>
+        </div>
+
+        <div class="status-logger">
+            💥 [SYSTEM MONITOR]: @lastMessage
+        </div>
+
+        <div class="control-deck-container">
+            <div class="matrix-box left-matrix">
+                <div class="matrix-header">🛡️ KNIGHT MATRIX</div>
+                <div class="matrix-content">
+                    <div class="matrix-row"><span>position x:</span> <strong>@(playerX)px</strong></div>
+                    <div class="matrix-row"><span>pose:</span> <strong class="val-green">@playerPose</strong></div>
+                    <div class="matrix-row"><span>hotkeys:</span> <strong>Arrows / Shift / W / Space</strong></div>
+                    <div class="matrix-row"><span>speed:</span> <strong>@(isRunning ? "Double Run" : "Normal Walk")</strong></div>
+                </div>
+            </div>
+
+            <div class="control-deck-wrapper">
+                <div class="deck-title">ARCADE CONTROLS (ROUND @currentRound)</div>
+                <div class="buttons-row">
+                    <div class="btn-wrapper-block">
+                        <span class="btn-label-top">RUN [Shift]</span>
+                        <button @onclick="ToggleRun" disabled="@(isPaused || isRoundOver || showIntro)" class="arcade-3d-btn btn-cyan-3d @(isRunning ? "run-active-glow" : "")">
+                            <span class="arcade-btn-icon">🏃</span>
+                        </button>
+                    </div>
+                    <div class="btn-wrapper-block">
+                        <span class="btn-label-top">SHIELD [W]</span>
+                        <button @onclick="TriggerShield" disabled="@(isPaused || isRoundOver || showIntro)" class="arcade-3d-btn btn-pause-3d">
+                            <span class="arcade-btn-icon">🛡️</span>
+                        </button>
+                    </div>
+                    <div class="btn-wrapper-block">
+                        <span class="btn-label-top">ATTACK</span>
+                        <button @onclick="TriggerAttack" disabled="@(isPaused || isRoundOver || showIntro)" class="arcade-3d-btn btn-red-3d">
+                            <span class="arcade-btn-icon btn-attack-icon">⚔️</span>
+                        </button>
+                    </div>
+                    <div class="btn-wrapper-block">
+                        <span class="btn-label-top">DODGE/MOVE</span>
+                        <div style="display: flex; gap: 4px;">
+                            <button @onclick="MoveBackward" disabled="@(isPaused || isRoundOver || showIntro)" class="arcade-3d-btn btn-green-3d" style="padding: 0 10px;">◀</button>
+                            <button @onclick="MoveForward" disabled="@(isPaused || isRoundOver || showIntro)" class="arcade-3d-btn btn-green-3d" style="padding: 0 10px;">▶</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matrix-box right-matrix">
+                <div class="matrix-header">💀 SKELETON MATRIX</div>
+                <div class="matrix-content">
+                    <div class="matrix-row"><span>position x:</span> <strong>@(enemyX)px</strong></div>
+                    <div class="matrix-row"><span>pose:</span> <strong class="val-red">@enemyPose</strong></div>
+                    <div class="matrix-row"><span>attack mode:</span> <strong class="val-red">@(currentRound == 2 ? "FIREBALL" : "MELEE")</strong></div>
+                    <div class="matrix-row"><span>ai-brain:</span> <strong>active-chase</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 15px;">
+            <button @onclick="ResetDashboardLayout" style="background: #ef4444; color: white; border: none; padding: 8px 16px; font-weight: bold; border-radius: 4px; cursor: pointer;">
+                🛑 EXIT ARENA & RETURN TO LOBBY
+            </button>
+        </div>
+    }
+</div>
+
+
+@code {
+    private string currentTheme = "theme-dark";
+    private bool isGameStarted = false;
+    
+    private int playerHP = 100;
+    private int enemyHP = 100;
+    private int knightScore = 0;
+    private int skeletonScore = 0;
+    private int playerX = 150;
+    private int enemyX = 1000;
+    
+    private string playerPose = "Idle";
+    private string enemyPose = "Idle";
+    private string battleStatus = "intro-phase";
+    private string lastMessage = "Cinematic Intro Active... Prepare yourself!";
+    
+    private bool isPaused = false;
+    private bool isRoundOver = false;
+    private bool isTournamentWon = false;
+    private bool showIntro = true;
+    private string roundOverMessage = "";
+    private int currentRound = 1;
+    private int fireballX = 1000;
+    private bool isFireballActive = false;
+    private bool isRunning = false;
+    private bool showSettings = false;
+
+    // Theme Colors
+    private string skyColorTop = "#020617";
+    private string skyColorMid = "#0f172a";
+    private string skyColorBot = "#1e1b4b";
+    private string cloudColor1 = "#312e81";
+    private string cloudColor2 = "#4338ca";
+    private string mountainColorTop = "#111827";
+    private string mountainColorBot = "#1f2937";
+    private string mountainFrontColor = "#111827";
+    private string groundColorTop = "#020617";
+    private string groundColorBot = "#0f172a";
+    private string gridLineColor = "#38bdf8";
+
+    // HRE ENGINE KA REAL TIMER FIXED
+    private System.Timers.Timer? gameLoopTimer;
+
+    private void StartMatchArena(int targetRound)
+    {
+        // Purane chalte hue timer ko saaf karo pehle
+        gameLoopTimer?.Stop();
+        gameLoopTimer?.Dispose();
+
+        currentRound = targetRound;
+        isGameStarted = true;
+        showIntro = true;
+        isRoundOver = false;
+        playerHP = 100;
+        enemyHP = 100;
+        playerX = 150;
+        enemyX = 1000;
+        playerPose = "Idle";
+        enemyPose = "Idle";
+        
+        if (currentRound == 2)
+        {
+            isFireballActive = true;
+            fireballX = 1000;
+            lastMessage = "Level 2 Initiated: Fireball Evasion Sequence Active!";
+        }
+        else
+        {
+            isFireballActive = false;
+            lastMessage = "Level 1 Initiated: Melee Combat Stance Engaged.";
+        }
+
+        // Auto hide intro overlay after 2 seconds
+        var introTimer = new System.Timers.Timer(2000);
+        introTimer.Elapsed += (s, e) =>
+        {
+            showIntro = false;
+            introTimer.Stop();
+            introTimer.Dispose();
+            
+            // INTRO KHATAM HOTAY HI GAME LOOP ENGINE START
+            StartGameLoop();
+            InvokeAsync(StateHasChanged);
+        };
+        introTimer.Start();
+    }
+
+    // NAYA FUNCTION: Jo Game Engine Loop ko har 50ms baad chalaye ga
+    private void StartGameLoop()
+    {
+        gameLoopTimer = new System.Timers.Timer(50); // 50 milliseconds tick speed
+        gameLoopTimer.Elapsed += OnGameTick;
+        gameLoopTimer.AutoReset = true;
+        gameLoopTimer.Start();
+    }
+
+    // NAYA FUNCTION: Jahan Skeleton ki Fight AI aur Fireball ki movement real-time calculate hogi
+    private void OnGameTick(object? sender, System.Timers.ElapsedEventArgs e)
+    {
+        if (!isGameStarted || showIntro || isRoundOver || isPaused) return;
+
+        InvokeAsync(() =>
+        {
+            int distance = Math.Abs(playerX - enemyX);
+
+            // --- ROUND 1 SKELETON AI ---
+            if (currentRound == 1)
+            {
+                if (distance > 90)
+                {
+                    enemyX -= 5; // Skeleton Knight ki taraf barhega
+                    enemyPose = "Idle";
+                }
+                else
+                {
+                    // Range me aate hi skeleton attack karega
+                    enemyPose = "Attack";
+                    
+                    if (playerPose != "Shield" && playerPose != "Hit")
+                    {
+                        playerHP = Math.Max(0, playerHP - 2); // Player damage layer
+                        playerPose = "Hit";
+                        lastMessage = "Skeleton deals damage! Use Shield [W]!";
+                        
+                        if (playerHP <= 0) HandleRoundLoss();
+                        
+                        // Hit stance reset delay
+                        Task.Delay(300).ContinueWith(_ => { if (playerPose == "Hit") playerPose = "Idle"; InvokeAsync(StateHasChanged); });
+                    }
+                    else if (playerPose == "Shield")
+                    {
+                        lastMessage = "Attack Blocked successfully!";
+                    }
+                }
+            }
+
+            // --- ROUND 2 FIREBALL TRACKER ---
+            if (currentRound == 2)
+            {
+                if (isFireballActive)
+                {
+                    enemyPose = "Attack";
+                    fireballX -= 25; // Fireball left side pe slide karegi fastly
+
+                    // Fireball hits player detection
+                    if (Math.Abs(fireballX - playerX) < 40)
+                    {
+                        isFireballActive = false; // Reset object
+                        
+                        if (playerPose == "Shield")
+                        {
+                            knightScore += 100;
+                            lastMessage = "Fireball Blocked! +100 Points.";
+                        }
+                        else
+                        {
+                            playerHP = Math.Max(0, playerHP - 20);
+                            playerPose = "Hit";
+                            lastMessage = "Ouch! Fireball hit you! -20 HP.";
+                            if (playerHP <= 0) HandleRoundLoss();
+                            
+                            Task.Delay(300).ContinueWith(_ => { if (playerPose == "Hit") playerPose = "Idle"; InvokeAsync(StateHasChanged); });
+                        }
+                        
+                        // Nayi fireball respawn timer setup automatically
+                        RespawnFireball();
+                    }
+                    else if (fireballX < 0) // Screen se baahir nikal gayi agar
+                    {
+                        isFireballActive = false;
+                        RespawnFireball();
+                    }
+                }
+            }
+
+            StateHasChanged();
+        });
+    }
+
+    private void RespawnFireball()
+    {
+        Task.Delay(1000).ContinueWith(_ =>
+        {
+            if (isGameStarted && !isRoundOver)
+            {
+                fireballX = enemyX - 40;
+                isFireballActive = true;
+                InvokeAsync(StateHasChanged);
+            }
+        });
+    }
+
+    private void HandleRoundLoss()
+    {
+        isRoundOver = true;
+        gameLoopTimer?.Stop();
+        roundOverMessage = "GAME OVER! Dark Magic Defeated You.";
+    }
+
+    private void ResetDashboardLayout()
+    {
+        gameLoopTimer?.Stop();
+        isGameStarted = false;
+        isRoundOver = false;
+        isFireballActive = false;
+        currentRound = 1;
+        playerHP = 100;
+        enemyHP = 100;
+        lastMessage = "Dashboard Re-initialized. Choose a Level.";
+    }
+
+    private void ToggleSettings() => showSettings = !showSettings;
+
+    private void ChangeTheme(string theme)
+    {
+        currentTheme = theme;
+        if (theme == "theme-light")
+        {
+            skyColorTop = "#bae6fd"; skyColorMid = "#7dd3fc"; skyColorBot = "#38bdf8";
+            groundColorTop = "#e2e8f0"; groundColorBot = "#cbd5e1"; gridLineColor = "#0284c7";
+        }
+        else
+        {
+            skyColorTop = "#020617"; skyColorMid = "#0f172a"; skyColorBot = "#1e1b4b";
+            groundColorTop = "#020617"; groundColorBot = "#0f172a"; gridLineColor = "#38bdf8";
+        }
+    }
+
+    private void ToggleRun() => isRunning = !isRunning;
+    private void MoveForward() => playerX = Math.Min(1100, playerX + (isRunning ? 40 : 20));
+    private void MoveBackward() => playerX = Math.Max(50, playerX - (isRunning ? 40 : 20));
+
+    private void TriggerShield()
+    {
+        playerPose = "Shield";
+        lastMessage = "Knight is blocking attacks!";
+        Task.Delay(800).ContinueWith(_ =>
+        {
+            if (playerPose == "Shield") playerPose = "Idle";
+            InvokeAsync(StateHasChanged);
+        });
+    }
+
+    private void TriggerAttack()
+    {
+        if (playerPose == "Hit") return;
+        playerPose = "Attack";
+        
+        if (Math.Abs(playerX - enemyX) < 120 && currentRound == 1)
+        {
+            enemyHP = Math.Max(0, enemyHP - 15);
+            knightScore += 50;
+            lastMessage = "Hit Successful! Enemy HP Reduced.";
+            if (enemyHP <= 0) HandleRoundWin();
+        }
+        else if (currentRound == 2)
+        {
+            lastMessage = "Fire Mage is too far! Just Survive and Block!";
+        }
+        else
+        {
+            lastMessage = "Attack missed! Move closer to the target.";
+        }
+
+        Task.Delay(400).ContinueWith(_ =>
+        {
+            if (playerPose == "Attack") playerPose = "Idle";
+            InvokeAsync(StateHasChanged);
+        });
+    }
+
+    private void HandleRoundWin()
+    {
+        isRoundOver = true;
+        gameLoopTimer?.Stop();
+        roundOverMessage = currentRound == 1 ? "ROUND 1 CLEAR! Gatekeeper Defeated." : "VICTORY! Tournament Won.";
+    }
+
+    private void ProceedToNextMatchState()
+    {
+        if (currentRound == 1)
+        {
+            StartMatchArena(2);
+        }
+        else
+        {
+            ResetDashboardLayout();
+        }
+    }
+
+    private void HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (!isGameStarted || showIntro || isRoundOver) return;
+        switch (e.Key)
+        {
+            case "ArrowRight": MoveForward(); break;
+            case "ArrowLeft": MoveBackward(); break;
+            case "Shift": ToggleRun(); break;
+            case "w": case "W": TriggerShield(); break;
+            case " ": TriggerAttack(); break;
+        }
+    }
+
+    public void Dispose()
+    {
+        gameLoopTimer?.Stop();
+        gameLoopTimer?.Dispose();
+    }
+} *@
+
+
+@page "/home"
 @using blazor_final_pro.Services
 @using System.Timers
 @implements IDisposable
@@ -579,7 +1361,7 @@
         introTimer.Start();
     }
 
-    // NAYA FUNCTION: Jo Game Engine Loop ko har 50ms baad chalaye ga
+    // Game Engine Loop Function
     private void StartGameLoop()
     {
         gameLoopTimer = new System.Timers.Timer(50); // 50 milliseconds tick speed
@@ -588,7 +1370,7 @@
         gameLoopTimer.Start();
     }
 
-    // NAYA FUNCTION: Jahan Skeleton ki Fight AI aur Fireball ki movement real-time calculate hogi
+    // AI and Fireball tracking engine
     private void OnGameTick(object? sender, System.Timers.ElapsedEventArgs e)
     {
         if (!isGameStarted || showIntro || isRoundOver || isPaused) return;
@@ -656,10 +1438,10 @@
                             Task.Delay(300).ContinueWith(_ => { if (playerPose == "Hit") playerPose = "Idle"; InvokeAsync(StateHasChanged); });
                         }
                         
-                        // Nayi fireball respawn timer setup automatically
+                        // Nayi fireball respawn setup
                         RespawnFireball();
                     }
-                    else if (fireballX < 0) // Screen se baahir nikal gayi agar
+                    else if (fireballX < 0) // Screen se baahir
                     {
                         isFireballActive = false;
                         RespawnFireball();
@@ -780,7 +1562,7 @@
         {
             ResetDashboardLayout();
         }
-    }
+    }   
 
     private void HandleKeyPress(KeyboardEventArgs e)
     {
