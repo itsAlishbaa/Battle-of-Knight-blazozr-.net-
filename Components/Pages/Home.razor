@@ -532,11 +532,15 @@
     private string groundColorBot = "#0f172a";
     private string gridLineColor = "#38bdf8";
 
-    private Timer? gameLoopTimer;
+    // HRE ENGINE KA REAL TIMER FIXED
+    private System.Timers.Timer? gameLoopTimer;
 
-    // UPDATED METHOD: Accepts targeted level/round parameter
     private void StartMatchArena(int targetRound)
     {
+        // Purane chalte hue timer ko saaf karo pehle
+        gameLoopTimer?.Stop();
+        gameLoopTimer?.Dispose();
+
         currentRound = targetRound;
         isGameStarted = true;
         showIntro = true;
@@ -561,19 +565,135 @@
         }
 
         // Auto hide intro overlay after 2 seconds
-        var introTimer = new Timer(2000);
+        var introTimer = new System.Timers.Timer(2000);
         introTimer.Elapsed += (s, e) =>
         {
             showIntro = false;
             introTimer.Stop();
             introTimer.Dispose();
+            
+            // INTRO KHATAM HOTAY HI GAME LOOP ENGINE START
+            StartGameLoop();
             InvokeAsync(StateHasChanged);
         };
         introTimer.Start();
     }
 
+    // NAYA FUNCTION: Jo Game Engine Loop ko har 50ms baad chalaye ga
+    private void StartGameLoop()
+    {
+        gameLoopTimer = new System.Timers.Timer(50); // 50 milliseconds tick speed
+        gameLoopTimer.Elapsed += OnGameTick;
+        gameLoopTimer.AutoReset = true;
+        gameLoopTimer.Start();
+    }
+
+    // NAYA FUNCTION: Jahan Skeleton ki Fight AI aur Fireball ki movement real-time calculate hogi
+    private void OnGameTick(object? sender, System.Timers.ElapsedEventArgs e)
+    {
+        if (!isGameStarted || showIntro || isRoundOver || isPaused) return;
+
+        InvokeAsync(() =>
+        {
+            int distance = Math.Abs(playerX - enemyX);
+
+            // --- ROUND 1 SKELETON AI ---
+            if (currentRound == 1)
+            {
+                if (distance > 90)
+                {
+                    enemyX -= 5; // Skeleton Knight ki taraf barhega
+                    enemyPose = "Idle";
+                }
+                else
+                {
+                    // Range me aate hi skeleton attack karega
+                    enemyPose = "Attack";
+                    
+                    if (playerPose != "Shield" && playerPose != "Hit")
+                    {
+                        playerHP = Math.Max(0, playerHP - 2); // Player damage layer
+                        playerPose = "Hit";
+                        lastMessage = "Skeleton deals damage! Use Shield [W]!";
+                        
+                        if (playerHP <= 0) HandleRoundLoss();
+                        
+                        // Hit stance reset delay
+                        Task.Delay(300).ContinueWith(_ => { if (playerPose == "Hit") playerPose = "Idle"; InvokeAsync(StateHasChanged); });
+                    }
+                    else if (playerPose == "Shield")
+                    {
+                        lastMessage = "Attack Blocked successfully!";
+                    }
+                }
+            }
+
+            // --- ROUND 2 FIREBALL TRACKER ---
+            if (currentRound == 2)
+            {
+                if (isFireballActive)
+                {
+                    enemyPose = "Attack";
+                    fireballX -= 25; // Fireball left side pe slide karegi fastly
+
+                    // Fireball hits player detection
+                    if (Math.Abs(fireballX - playerX) < 40)
+                    {
+                        isFireballActive = false; // Reset object
+                        
+                        if (playerPose == "Shield")
+                        {
+                            knightScore += 100;
+                            lastMessage = "Fireball Blocked! +100 Points.";
+                        }
+                        else
+                        {
+                            playerHP = Math.Max(0, playerHP - 20);
+                            playerPose = "Hit";
+                            lastMessage = "Ouch! Fireball hit you! -20 HP.";
+                            if (playerHP <= 0) HandleRoundLoss();
+                            
+                            Task.Delay(300).ContinueWith(_ => { if (playerPose == "Hit") playerPose = "Idle"; InvokeAsync(StateHasChanged); });
+                        }
+                        
+                        // Nayi fireball respawn timer setup automatically
+                        RespawnFireball();
+                    }
+                    else if (fireballX < 0) // Screen se baahir nikal gayi agar
+                    {
+                        isFireballActive = false;
+                        RespawnFireball();
+                    }
+                }
+            }
+
+            StateHasChanged();
+        });
+    }
+
+    private void RespawnFireball()
+    {
+        Task.Delay(1000).ContinueWith(_ =>
+        {
+            if (isGameStarted && !isRoundOver)
+            {
+                fireballX = enemyX - 40;
+                isFireballActive = true;
+                InvokeAsync(StateHasChanged);
+            }
+        });
+    }
+
+    private void HandleRoundLoss()
+    {
+        isRoundOver = true;
+        gameLoopTimer?.Stop();
+        roundOverMessage = "GAME OVER! Dark Magic Defeated You.";
+    }
+
     private void ResetDashboardLayout()
     {
+        gameLoopTimer?.Stop();
         isGameStarted = false;
         isRoundOver = false;
         isFireballActive = false;
@@ -610,20 +730,26 @@
         lastMessage = "Knight is blocking attacks!";
         Task.Delay(800).ContinueWith(_ =>
         {
-            playerPose = "Idle";
+            if (playerPose == "Shield") playerPose = "Idle";
             InvokeAsync(StateHasChanged);
         });
     }
 
     private void TriggerAttack()
     {
+        if (playerPose == "Hit") return;
         playerPose = "Attack";
-        if (Math.Abs(playerX - enemyX) < 120)
+        
+        if (Math.Abs(playerX - enemyX) < 120 && currentRound == 1)
         {
             enemyHP = Math.Max(0, enemyHP - 15);
             knightScore += 50;
             lastMessage = "Hit Successful! Enemy HP Reduced.";
             if (enemyHP <= 0) HandleRoundWin();
+        }
+        else if (currentRound == 2)
+        {
+            lastMessage = "Fire Mage is too far! Just Survive and Block!";
         }
         else
         {
@@ -640,6 +766,7 @@
     private void HandleRoundWin()
     {
         isRoundOver = true;
+        gameLoopTimer?.Stop();
         roundOverMessage = currentRound == 1 ? "ROUND 1 CLEAR! Gatekeeper Defeated." : "VICTORY! Tournament Won.";
     }
 
@@ -668,5 +795,9 @@
         }
     }
 
-    public void Dispose() => gameLoopTimer?.Dispose();
+    public void Dispose()
+    {
+        gameLoopTimer?.Stop();
+        gameLoopTimer?.Dispose();
+    }
 }
